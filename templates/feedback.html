@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    {% include 'header.html' %}
+    <title>Feedback - 查老师</title>
+
+<link rel="stylesheet" href="/static/css/base.css"/>
+<link rel="stylesheet" href="/static/css/home.css"/>
+<link rel="stylesheet" href="/static/css/rate.css"/>
+
+</head>
+<body>
+
+{% include 'search.html' %}
+
+<div class="main">
+    <div class="comment">
+        <form method="POST" id="comment-form">
+            <input name="contact" placeholder="联系方式（选填）">
+            <textarea name="comment" id="comment" rows="3" placeholder="如果您有任何疑问或建议，请一定告诉我们"></textarea>
+            <a class="submit" onclick="$('#comment-form').submit()">提交</a>
+            <a class="cancel" href="/">返回</a>
+        </form>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+<script type="application/javascript">
+
+</script>
+</body>
+</html>

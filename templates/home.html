@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    {% include 'header.html' %}
+    <title>查老师 - 浙大匿名教评系统</title>
+    
+<link rel="stylesheet" href="/static/css/base.css"/>
+<link rel="stylesheet" href="/static/css/home.css"/>
+
+</head>
+<body>
+
+{% include 'search.html' %}
+
+<div class="main">
+    <div class="college-selection">
+        <form id="college-form" action="/" method="POST">
+            <input type="hidden" name="college" id="college_id" value="{{ college_id }}">
+            <label for="college">当前学院：</label>
+            <select id="college" onchange="changeCollege(this.value);">
+                <option value="-1">全部</option>
+                {% for college in colleges %}
+                    <option {% if college.pk ==  college_id %}selected="selected"{% endif %} value="{{ college.pk }}">{{ college.name }}</option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+    {% if spider %}
+        {% for teacher in hot_teachers %}
+   			<a href="http://chalaoshi.cn/teacher/{{teacher.pk}}/">{{ teacher.name }}</a>
+        {% endfor %}
+    {% else %}
+    <div id='slider' class='swipe'>
+        <div class='swipe-wrap'>
+            <div class="hot">
+                <p class="hot-teacher">热门老师</p>
+                <ul class="hot-list">
+                {% for teacher in hot_teachers %}
+                    <li class="hot-item"><a href="/teacher/{{teacher.pk}}/">{{ teacher.name | truncatewords:"6"}}</a></li>
+                {% endfor %}
+                </ul>
+            </div>
+            <div class="hot">
+                <p class="hot-teacher"><i class="iconfont">&#xe606;</i>&nbsp;高分榜</p>
+                <ul class="hot-list">
+                {% for teacher in high_teachers %}
+                    <li class="hot-item"><a class="left" href="/teacher/{{teacher.pk}}/">{{ teacher.name | truncatewords:"6"}}</a><p class="right">{{ teacher.rate|floatformat:"2" }}</p></li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="result-list hidden">
+
+    </div>
+
+    <div class="commit">
+        <span></span>
+    </div>
+</div>
+
+<div class="copyright">
+    <p>在这里，一切都是匿名的</p>
+    <p>您可以畅所欲言</p>
+</div>
+
+{% include 'footer.html' %}
+<script src="/static/js/swipe.js"></script>
+<script src="/static/js/home.js"></script>
+</body>
+</html>

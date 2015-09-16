@@ -1,0 +1,48 @@
+<div id="tip">
+        <section>
+            <header></header>
+            <footer>确定</footer>
+        </section>
+</div>
+<script type="application/javascript">
+    var eventType;
+    /************check the broswer*****************/
+    function checkBroswer(){
+        var sUserAgent = navigator.userAgent.toLowerCase();
+        var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+        var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+        var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+        var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+        var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+        var bIsAndroid = sUserAgent.match(/android/i) == "android";
+        var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+        var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+        if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    if(checkBroswer()){
+        eventType = "tap";
+    }else {
+        eventType = "click";
+    }
+
+    /*****提示框的显隐*****/
+    $("#tip footer").on(eventType,function(e){
+        e.stopPropagation();
+        $("#tip").fadeOut(200);
+    });
+
+    $("#tip section").on(eventType,function(e){
+        e.stopPropagation();
+    });
+
+
+    window.showTip = function(text) {
+        $("#tip").find("header").text(text);
+        $("#tip").fadeIn(100);
+    }
+</script>

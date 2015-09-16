@@ -1,0 +1,157 @@
+.rate h3 {
+    text-align: center;
+    margin-bottom: 0;
+}
+.rate .row {
+    margin: 3px auto;
+    width: 250px;
+}
+
+.rate .row a{
+    margin: 8px 10px;
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    border: 1px #007aff solid;
+    line-height: 60px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: lighter;
+
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.rate .row i{
+    font-size: 30px;
+}
+.rate .row .point.select{
+    background: #007aff;
+    color: #ffffff;
+}
+
+.rate .row .check-in{
+    border-color: #43c447;
+}
+.rate .row .check-in.select{
+    background: #43c447;
+    border-color: #43c447;
+    color: #ffffff;
+}
+.rate .row .not-check-in{
+    border-color: #df0b0b;
+}
+.rate .row .not-check-in.select{
+    background: #df0b0b;
+    border-color: #df0b0b;
+    color: #ffffff;
+}
+.rate .row .submit {
+    background: #43c447;
+    border-color: #43c447;
+    color: #ffffff;
+
+    -webkit-animation: zoomInOut 3s ease 1s infinite;
+    -o-animation: zoomInOut 3s ease 1s infinite;
+    animation: zoomInOut 3s ease 1s infinite;
+
+}
+@keyframes zoomInOut {
+    0% {transform:scale(1,1);}
+    5% {transform:scale(1.3,1.3);}
+    20% {transform:scale(1,1);}
+    100% {transform:scale(1,1);}
+}
+@-webkit-keyframes zoomInOut{
+    0% {-webkit-transform:scale(1,1);}
+    5% {-webkit-transform:scale(1.3,1.3);}
+    20% {-webkit-transform:scale(1,1);}
+    100% {-webkit-transform:scale(1,1);}
+}
+
+.rate .caption {
+    margin: -5px auto;
+    width: 250px;
+}
+.rate .caption p {
+    margin: 0 10px;
+    width: 60px;
+    display: inline-block;
+    text-align: center;
+    color: #818181;
+}
+
+
+.comment h3 {
+    margin: 10px;
+}
+
+.comment textarea {
+    width: 80%;
+    height: 300px;
+    display: block;
+    margin: 10px auto;
+    border: 1px #d8d8d8 solid;
+    border-radius: 5px;
+    color: #424242;
+    font-size: 15px;
+}
+.comment input {
+    width: 80%;
+    display: block;
+    margin: 10px auto;
+    border: 1px #d8d8d8 solid;
+    border-radius: 5px;
+    color: #007aff;
+
+    font-size: 15px;
+    height: 30px;
+}
+.comment a{
+    margin: 10px auto;
+    display: block;
+    width: 80%;
+    height: 40px;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 15px;
+    line-height: 40px;
+    color: #ffffff;
+}
+
+.comment .submit{
+    background:  #007aff;
+}
+.comment .cancel {
+    background: #818181;
+}
+
+@media screen and (min-width: 321px) { /*当屏幕尺寸小于600px时，应用下面的CSS样式*/
+  .comment .row {
+      height: 80px;
+  }
+  .comment .row .right {
+      font-size: 1.1em;
+  }
+  .rate .row {
+      width: 280px;
+  }
+  .rate .row a {
+      width: 70px;
+      height: 70px;
+      border-radius: 35px;
+      line-height: 70px;
+  }
+  .caption {
+      width: 280px !important;
+  }
+  .caption p {
+      width: 70px !important;;
+      border-radius: 35px;
+  }
+
+}

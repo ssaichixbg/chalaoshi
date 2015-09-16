@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    {% include 'header.html' %}
+    <title>查老师 - 浙大匿名教评系统</title>
+    <link rel="stylesheet" href="/static/css/base.css"/>
+    <link rel="stylesheet" href="/static/css/home.css"/>
+</head>
+<body style="margin: 8px">
+
+<div class="main">
+    <div class="hot">
+        <p class="hot-teacher">为了更好地用户体验，目前本站仅限移动端访问。</p>
+        <p class="hot-teacher">扫描二维码，即刻访问</p>
+        <img src="/static/img/qrcode.png" width="300px" height="300px">
+    </div>
+</div>
+
+{% include 'footer.html' %}
+
+<style type="text/css">
+    .footer {
+    position:absolute;
+    bottom:0;
+    left:50%;
+    width:500px;
+    margin-left:-250px;
+    padding: 0 5px;
+    text-align:center;
+    color: #818181;
+    font-size:0.85em;
+}
+
+.footer a{
+    color: #007AFF;
+}
+</style>
+</body>
+</html>

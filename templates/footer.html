@@ -1,0 +1,48 @@
+<script src="http://chalaoshi.sinaapp.com/static/js/zepto.min.js"></script>
+<script src="/static/js/search.js"></script>
+{% include 'alertview.html' %}
+
+<!--b>微信分享图标</-->
+<div style="position: absolute;z-index: -999"><img src="/static/img/chalaoshi.png" style="top:0;right:0;width: 1px;height: 1px;"></div>
+
+<div class="footer">
+    {% if not_empty %}
+    <!--a href="mailto:contact@zjustudy.com.cn?subject={% if teacher %}对“{{ teacher.name }}”老师的{% else %}“查老师”{% endif %}分数疑问" >对评分有疑问？</a-->
+    {% endif %}
+    {% if help %}
+    <a href="/feedback" >意见反馈</a>
+    {% endif %}
+    {% if copyright %}
+    <p>©2015 chalaoshi.cn Powered by ZJU学习帝. <br>Contact us:<a href="mailto:contact@zjustudy.com.cn?subject=“查老师”产品疑问">contact@zjustudy.com.cn</a></p>
+    {% endif %}
+</div>
+<script>
+    function share() {
+        $('#share-bg').css({'display':'block'});
+    }
+    // init
+    (function init(){
+        $('.main').fadeIn();
+        setTimeout(function(){
+            $('.share-button').removeClass('hidden');
+        },1000);
+    })();
+
+</script>
+
+<!--b>百度统计</-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?3df5b2b110c84bd849760e40371ed341";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--b>CNZZ</-->
+<div style="display:none;"><script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254535532'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/stat.php%3Fid%3D1254535532%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script></div>
+{% include 'wx.html' %}
+<div id="share-bg" onclick="$(this).css({'display':'none'});" style="display: none;">
+     <img src="/static/img/share.png">
+</div>

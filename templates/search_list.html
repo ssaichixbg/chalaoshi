@@ -1,0 +1,12 @@
+{% for teacher in teachers %}
+<div class="item" onclick="window.location='/teacher/{{teacher.pk}}/'">
+    <div class="left">
+        <h3>{{teacher.name}}</h3>
+        <p>{{teacher.college}}</p>
+    </div>
+    <div class="right">
+        <h2>{{teacher.rate}}</h2>
+    </div>
+</div>
+<hr>
+{% endfor %}

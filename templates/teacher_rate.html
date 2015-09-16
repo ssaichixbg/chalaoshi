@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    {% include 'header.html' %}
+    <title>给{{teacher.name}}老师打分 - 查老师</title>
+
+<link rel="stylesheet" href="/static/css/base.css"/>
+<link rel="stylesheet" href="/static/css/home.css"/>
+<link rel="stylesheet" href="/static/css/rate.css"/>
+
+</head>
+<body>
+
+{% include 'search.html' %}
+
+<div class="main">
+    <div class="rate">
+        <h3>请评分</h3>
+            <form method="POST" id="rate-form">
+            <input type="hidden" name="rate" id="rate">
+            <input type="hidden" name="check_in" id="check_in">
+            <div class="row">
+                <a class="point">1</a>
+                <a class="point">2</a>
+                <a class="point">3</a>
+            </div>
+            <div class="row">
+                <a class="point">4</a>
+                <a class="point">5</a>
+                <a class="point">6</a>
+            </div>
+            <div class="row">
+                <a class="point">7</a>
+                <a class="point">8</a>
+                <a class="point">9</a>
+            </div>
+            <div class="row">
+                <a class="check-in iconfont">&#xe604; </a>
+                <a class="point">10</a>
+                <a class="not-check-in iconfont">&#xe605; </a>
+            </div>
+            <div class="caption">
+                <p>点名</p>
+                <p></p>
+                <p>不点名</p>
+            </div>
+            <div class="row">
+                <a class="hidden">1</a>
+                <a class="submit iconfont">&#xe603;</a>
+                <a class="hidden">2</a>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% include 'footer.html' %}
+<script src="/static/js/rate.js"></script>
+</body>
+</html>

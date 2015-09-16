@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    {% include 'header.html' %}
+    <title>听{{teacher.name}}老师的课是怎样的一种体验 - 查老师</title>
+
+<link rel="stylesheet" href="/static/css/base.css"/>
+<link rel="stylesheet" href="/static/css/home.css"/>
+
+</head>
+<body>
+
+{% include 'search.html' %}
+
+<div class="main">
+    <div class="teacher">
+        <div class="left">
+            <h3>{{teacher.name}}</h3>
+            <p>{{teacher.college.school}}</p>
+            <p>{{teacher.college}}</p>
+            {% if not_empty %}
+            <p>{{check_in}}%的人认为该老师会点名<br></p>
+            {% endif %}
+        </div>
+        <div class="right">
+            <h2>{{rate}}</h2>
+            {% if not not_empty %}
+            <p>尚未收到足够的评分</p>
+            {% else %}
+            <p>{{count}}人参与评分</p>
+            {% endif %}
+        </div>
+    </div>
+    <div>
+        {{ teacher.gpa | safe }}
+    </div>
+
+    <script type="text/javascript" language="javascript">
+        function iFrameHeight() {
+            var ifm= document.getElementById("course_list");
+            var subWeb = document.frames ? document.frames["course_list"].document : ifm.contentDocument;
+            if(ifm != null && subWeb != null) {
+                ifm.height = subWeb.body.scrollHeight;
+            }
+        }
+    </script>
+    <div class="comment">
+            <hr>
+        {% if comments %}
+            {% for comment in comments  %}
+            <div class="row">
+                <div class="left">
+                    <p>
+                        <span class="rate-number">7.0 </span>
+                        {{comment.content}}
+                    </p>
+                    <p>
+                        发表于：2015年12月11日
+                    </p>
+                </div>
+                <div class="right">
+                    {% if comment.like %}
+                    <a class="up iconfont highlight" onclick="rateComment(this,{{comment.pk}},'like')" >&#xe601; </a>
+                    {% else %}
+                    <a class="up iconfont" onclick="rateComment(this,{{comment.pk}},'like')">&#xe601;  </a>
+                    {% endif %}
+                    <p class="{{comment.pk}}-count">{{comment.rate}}</p>
+                    {% if comment.dislike %}
+                    <a class="down iconfont highlight" onclick="rateComment(this,{{comment.pk}},'dislike')">&#xe601;</a>
+                    {% else %}
+                    <a class="down iconfont" onclick="rateComment(this,{{comment.pk}},'dislike')">&#xe601;  </a>
+                    {% endif %}
+                </div>
+            </div>
+            <hr>
+            {% endfor %}
+        {% else %}
+            <p class="empty">还没有人点评，快来点击下面的评分吧~</p>
+        {% endif %}
+        <div style="height: 74px"></div>
+    </div>
+{% if not rated %}
+    <a class="rating" href="./rate"><i class="iconfont" style="font-size: 20px">&#xe602; </i> 评分</a>
+{% else %}
+    <a class="rating" href="./rate"><i class="iconfont" style="font-size: 20px">&#xe602; </i> 修改评分</a>
+{% endif %}
+</div>
+<a class="share-button iconfont hidden" onclick="share();">&#xe609;</a>
+{% include 'footer.html' %}
+<script src="/static/js/rate.js"></script>
+</body>
+</html>

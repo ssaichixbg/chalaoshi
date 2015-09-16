@@ -1,0 +1,365 @@
+/*colors*/
+body {
+    padding-bottom: 0;
+}
+
+.bar, .headBar, .searchBar {
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 10;
+    height: 45px;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #dbdbdb;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.header {
+    height: 1em;
+}
+
+.headBar {
+    position: static;
+    height: 40px;
+    border-bottom: none;
+}
+
+.headBar .head-wrap {
+    margin: 0 auto;
+    height: 40px;
+    padding-left: 95px;
+    position: relative;
+    font-size: 0;
+}
+
+.headBar .head-wrap a {
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 6px;
+    padding-right: 6px;
+    font-size: 1em;
+    text-decoration: none;
+}
+
+.headBar .head-wrap a img {
+    height: 40px;
+}
+
+.headBar .head-wrap a:hover {
+    background-color: #a5d0fe;
+}
+
+.headBar .head-wrap a:active {
+    background-color: #a5d0fe;
+}
+
+.headBar .head-wrap a.img {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.searchBar {
+    position: static;
+    padding-top: 0;
+}
+
+.searchBar .search-wrap {
+    margin: 0 auto;
+    width: 95%;
+    font-size: 0;
+}
+.searchBar .search-wrap i{
+    position: absolute;
+    right: 5%;
+    top: 22px;
+    color: #333;
+}
+.searchBar .search-wrap input {
+    width: 99%;
+    color: #333;
+    margin: auto;
+    display: block;
+    height: 34px;
+    border-radius: 5px;
+    background-color: #e3e4e6;
+    outline: none;
+    border: none;
+    border-right: 1px solid #dbdbdb;
+    padding: 5px;
+    font-size: 16px;
+}
+
+.searchBar .search-wrap input::-webkit-input-placeholder {
+    color: #aaa;
+    font-size: 1em;
+}
+
+/*colors*/
+/*colors*/
+#tip {
+    position: fixed;
+    display: none;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 40;
+}
+
+#tip section {
+    position: relative;
+    text-align: center;
+    background-color: #ffffff;
+    top: 150px;
+    width: 80%;
+    border-radius: 5px;
+    margin: 0 auto;
+}
+
+#tip section header {
+    padding: 30px 10px;
+    font-size: 22px;
+    color: #999;
+}
+
+#tip section footer {
+    border-top: 1px solid #dbdbdb;
+    padding: 10px 0;
+    font-size: 1em;
+    color: #007aff;
+    cursor: pointer;
+}
+
+.main {
+    position: relative;
+    height: 400px;
+}
+
+.hot {
+    text-align: center;
+}
+
+.hot .hot-teacher {
+    color: #373737;
+    font-size: 1.7em;
+    /* margin-top: 10px; */
+    margin-bottom: 10px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.hot .hot-teacher i{
+    font-size: 1.0em !important;
+}
+.hot .hot-item {
+    color: #007aff;
+    height: 24px;
+    line-height: 24px;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.hot .hot-item .left {
+    text-align: left; position: absolute; left: 50%; width: 90px; 
+    margin-left: -60px;
+}
+.hot .hot-item .right {
+    text-align: right;
+    position: absolute;
+    left: 50%;
+    color: #818181;
+    width: 60px;
+}
+.commit {
+    width: 100%;
+    height: 74px;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+}
+
+.commit span {
+    font-size: 1em;
+    color: #fc539b;
+    display: block;
+    text-align: center;
+    line-height: 30px;
+    height: 30px;
+}
+
+.teacher {
+    height: 165px;
+}
+.teacher .right {
+    position: absolute;
+    right: 20px;
+}
+.teacher .left {
+    position: absolute;
+    left: 20px;
+    text-align: left    ;
+}
+.teacher h2 {
+    font-weight: lighter;
+    font-size: 3em;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    line-height: 100%;
+    color: #373737;
+}
+.teacher h3 {
+    font-weight: lighter;
+    color: #007aff;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    margin-left: -3px;
+    font-size: 2.5em;
+}
+.teacher p {
+    color: #818181;
+    font-size: 1.1em;
+    margin-top: 3px;
+    margin-bottom: 5px;
+}
+.teacher .right {
+    text-align: right;
+}
+.comment .empty {
+    color: #818181;
+    text-align: center;
+}
+.comment .row {
+    height: 70px;
+    margin: 5px 0;
+}
+.comment .hidden{
+
+}
+.comment .right {
+    position: absolute;
+    right: 20px;
+    height: 71px;
+    line-height: 24px;
+        color: #818181;
+    font-size: 1.1em;
+}
+
+.comment .right .highlight {
+    color: #007AFF;
+}
+.comment .right a {
+    display: block;
+    height: 32%;
+}
+.comment .right p { 
+    display: block;
+    height: 32%;
+    text-align: center;
+   
+ 
+}
+.comment .right .up {
+    text-align: right;
+}
+.comment .right .down {
+    text-align: left;
+    display: block;
+    transform: rotate(180deg);
+    -ms-transform: rotate(180deg);		/* IE 9 */
+    -webkit-transform: rotate(180deg);	/* Safari and Chrome */
+    -o-transform: rotate(180deg);		/* Opera */
+    -moz-transform: rotate(180deg);		/* Firefox */
+}
+.comment .left {
+    position: absolute;
+    width: 80%;
+    left: 20px;
+}
+.comment .left p{
+    color: #818181;
+    font-size: 1em;
+}
+.comment .count {
+    background: #007AFF ;
+    color: #ffffff;
+    text-align: center;
+    padding: 10px;
+}
+.comment .rate-number{
+    color: #007AFF ;
+    font-size: 1.5em;
+}
+.comment hr {
+    margin: 10px;
+}
+.rating {
+    position: fixed;
+    bottom: 0;
+    height: 44px;
+    background: #007AFF;
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    line-height: 44px;
+    color: #ffffff;
+    margin: auto;
+}
+
+/**
+* swipe.js
+*/
+.swipe {
+  overflow: hidden;
+  visibility: hidden;
+  position: relative;
+}
+.swipe-wrap {
+  overflow: hidden;
+  position: relative;
+}
+.swipe-wrap > div {
+  float:left;
+  width:100%;
+  position: relative;
+}
+
+.college-selection {
+    margin: 10px  3%;
+    font-size: 1em;
+}
+.college-selection p{
+    width: 70px;
+    display: inline-block;
+
+}
+.college-selection select {
+    width: 200px;
+    background: none;
+    color: #007AFF;
+    border: none;
+    display: inline-block;
+    text-align: center;
+    font-size: 1em;
+}
+@media screen and (min-width: 321px) { /*当屏幕尺寸小于600px时，应用下面的CSS样式*/
+  .comment .row {
+      height: 80px;
+  }
+  .comment .row .right{
+      font-size: 1.1em;
+      height: 80px;
+      line-height: 27px;
+  }
+
+  .rating {
+      height: 50px;
+      line-height: 50px;
+  }
+
+}

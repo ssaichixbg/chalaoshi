@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    {% include 'header.html' %}
+    <title>评价{{teacher.name}}老师 - 查老师</title>
+
+<link rel="stylesheet" href="/static/css/base.css"/>
+<link rel="stylesheet" href="/static/css/home.css"/>
+<link rel="stylesheet" href="/static/css/rate.css"/>
+
+</head>
+<body>
+
+{% include 'search.html' %}
+
+<div class="main">
+    <div class="comment">
+        <form method="POST" id="comment-form">
+            <textarea name="comment" id="comment" rows="3" placeholder="听{{teacher.name}}老师的课是怎样一种体验?(80字以内)"></textarea>
+            <a class="submit">提交</a>
+            <!--a class="cancel" href="./">跳过</a-->
+        </form>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+<script src="/static/js/rate.js"></script>
+</body>
+</html>
