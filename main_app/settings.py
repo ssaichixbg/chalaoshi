@@ -114,5 +114,5 @@ FROM_EMAIL = '自动发送<contact@zjustudy.com.cn>'
 EMAIL_HOST = 'smtp.exmail.qq.com'
 EMAIL_PORT = '25'
 EMAIL_HOST_USER = 'contact@zjustudy.com.cn'
-EMAIL_HOST_PASSWORD = 'Zy4051234'
+EMAIL_HOST_PASSWORD = ''
 #EMAIL_USE_TLS = True
