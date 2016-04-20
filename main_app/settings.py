@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+env = os.environ
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -60,8 +61,7 @@ WSGI_APPLICATION = 'main_app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 DATABASES = None
-if 'PRODUCTION' in os.environ:
-    env = os.environ
+if 'PRODUCTION' in env:
     DATABASES = {
         'default': {
             'ENGINE':   'django.db.backends.mysql',
@@ -118,7 +118,7 @@ EMAIL_HOST_PASSWORD = ''
 #EMAIL_USE_TLS = True
 
 WECHAT = {}
-if 'PRODUCTION' in os.environ:
-    WECHAT['APPID'] = env['wechat_chalaoshi_api']
+if 'PRODUCTION' in env:
+    WECHAT['APPID'] = env['wechat_chalaoshi_appid']
     WECHAT['SECRET'] = env['wechat_chalaoshi_secret']
     WECHAT['TOKEN'] = env['wechat_chalaoshi_token']
