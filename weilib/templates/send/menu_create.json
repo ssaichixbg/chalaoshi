@@ -1,0 +1,33 @@
+{
+     "button":[
+     {% for menu in menu_list %}
+      {
+           "name":"{{ menu.name }}",
+           {% if not menu.sub_buttons %}
+            "type":"{{ menu.type }}",
+                {% if menu.type == 'view' %}
+                "url":"{{ menu.url }}"
+                {% endif %}
+                {% if menu.type == 'click' %}
+                "key":"{{ menu.key }}"
+                {% endif %}
+           {% else %}
+               "sub_button":[
+               {% for button in menu.sub_buttons %}
+               {	
+                    "name":"{{ button.name }}",
+                    {% if button.type == 'view' %}
+                    "url":"{{ button.url }}",
+                    {% endif %}
+                    {% if button.type == 'click' %}
+                    "key":"{{ button.key }}",
+                    {% endif %}
+                    "type":"{{ button.type }}"
+                }{% if not forloop.last %},{% endif %}
+                {% endfor %}
+                ]
+           {% endif %}
+       }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+       ]
+}

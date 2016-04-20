@@ -7,7 +7,6 @@ import urllib2
 from django.http import *
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
-import sae.kvdb
 
 from .models import *
 

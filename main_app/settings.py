@@ -25,7 +25,7 @@ DEBUG = False
 
 TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = ['zjustudy.sinaapp.com','www.chalaoshi.cn', 'chalaoshi.cn','localhost']
+ALLOWED_HOSTS = ['www.chalaoshi.cn', 'chalaoshi.cn','localhost']
 
 # Application definition
 
@@ -37,6 +37,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main_app',
+    #'www',
+    'wechat',
     #'debug_toolbar',
 )
 
@@ -58,18 +60,16 @@ WSGI_APPLICATION = 'main_app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 DATABASES = None
-if 'SERVER_SOFTWARE' in os.environ:
-    from sae.const import (
-        MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASS, MYSQL_DB
-    )
+if 'PRODUCTION' in os.environ:
+    env = os.environ
     DATABASES = {
         'default': {
             'ENGINE':   'django.db.backends.mysql',
-            'NAME':     MYSQL_DB,
-            'USER':     MYSQL_USER,
-            'PASSWORD': MYSQL_PASS,
-            'HOST':     MYSQL_HOST,
-            'PORT':     MYSQL_PORT,
+            'NAME':     env['mysql_chalaoshi_db'],
+            'USER':     env['mysql_chalaoshi_user'],
+            'PASSWORD': env['mysql_chalaoshi_password'],
+            'HOST':     env['mysql_host'],
+            'PORT':     env['mysql_port'],
         }
     }
 else:
@@ -98,7 +98,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-MEDIA_ROOT = '/s/files/'
+# MEDIA_ROOT = '/s/files/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
@@ -116,3 +116,9 @@ EMAIL_PORT = '25'
 EMAIL_HOST_USER = 'contact@zjustudy.com.cn'
 EMAIL_HOST_PASSWORD = ''
 #EMAIL_USE_TLS = True
+
+WECHAT = {}
+if 'PRODUCTION' in os.environ:
+    WECHAT['APPID'] = env['wechat_chalaoshi_api']
+    WECHAT['SECRET'] = env['wechat_chalaoshi_secret']
+    WECHAT['TOKEN'] = env['wechat_chalaoshi_token']
