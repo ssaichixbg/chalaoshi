@@ -1,4 +1,4 @@
-.font-hei {font-family: "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "Hiragino Sans GB", "Source Han Sans CN", "Source Han Sans SC", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;}
+.font-hei {font-family: "San Francisco","Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "Hiragino Sans GB", "Source Han Sans CN", "Source Han Sans SC", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;}
 .font-kai {font-family: Baskerville, Georgia, "Liberation Serif", "Kaiti SC", STKaiti, "AR PL UKai CN", "AR PL UKai HK", "AR PL UKai TW", "AR PL UKai TW MBE", "AR PL KaitiM GB", KaiTi, KaiTi_GB2312, "TW\-Kai", serif;}
 .font-song {font-family: Georgia, "Nimbus Roman No9 L", "Songti SC", STSong, "AR PL New Sung", "AR PL SungtiL GB", NSimSun, SimSun, "TW\-Sung", "WenQuanYi Bitmap Song", "AR PL UMing CN", "AR PL UMing HK", "AR PL UMing TW", "AR PL UMing TW MBE", serif;}
 .font-fang-song {font-family: Baskerville, "Times New Roman", "Liberation Serif", STFangsong, FangSong, FangSong_GB2312, "CWTEX\-F", serif;}
@@ -16,8 +16,8 @@ html {
 }
 body,html{
     font-size: 12px;
-    font-weight: lighter;
-    font-family: Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "Hiragino Sans GB", "Source Han Sans CN", "Source Han Sans SC", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
+    font-weight: 300;
+    font-family: "San Francisco",Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "Hiragino Sans GB", "Source Han Sans CN", "Source Han Sans SC", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
     background: #fcfcfc;
 }
 html,body,ul,li,div,p,header,footer{
@@ -49,6 +49,12 @@ hr {
 }
 
 @font-face {
+    font-family: 'iconfont';
+    src: url('/static/font/iconfont.woff') format('woff');
+
+}
+
+@font-face {
   font-family: 'iconfont';
   src: url('//at.alicdn.com/t/font_1427782392_1788816.eot'); /* IE9*/
   src: url('//at.alicdn.com/t/font_1427782392_1788816.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
@@ -56,8 +62,6 @@ hr {
   url('//at.alicdn.com/t/font_1427782392_1788816.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
   url('//at.alicdn.com/t/font_1427782392_1788816.svg#iconfont') format('svg'); /* iOS 4.1- */
 }
-
-
 
 .iconfont{
     font-family:"iconfont" !important;
@@ -91,14 +95,14 @@ hr {
     height: 80px;
 }
 .result-list h2 {
-    font-weight: lighter;
+    font-weight: 300;
     font-size: 2em;
     margin-top: 20px;
     line-height: 100%;
     color: #373737;
 }
 .result-list h3 {
-    font-weight: lighter;
+    font-weight: 300;
     color: #007aff;
     margin-top: 20px;
     margin-bottom: 8px;
@@ -251,6 +255,19 @@ input[type="search"]::-webkit-search-cancel-button {
     top: 0;
     width: 100%;
 }
+
+.one {
+    -moz-box-flex:1;
+    -webkit-box-flex:1;
+    box-flex:1;
+}
+
+.two {
+    -moz-box-flex:2;
+    -webkit-box-flex:2;
+    box-flex:2;
+}
+
 @media screen and (min-width: 321px) {
     body {
         font-size: 1.2em;

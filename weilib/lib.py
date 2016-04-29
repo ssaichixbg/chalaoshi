@@ -24,7 +24,6 @@ except ImportError:
 
 from .plugin.setting import plugin_text as PLUGINS
 
-import pylibmc as memcache
 DEFAULT_TIMEOUT = 15 * 60
 
 # basic info
@@ -331,15 +330,9 @@ def get_qrcode(appid, appsecret, scene_id):
 def generate_js_signature(appid, appsecret,url, noncestr):
     import time
 
-    client = None
-    try:
-        client = sae.kvdb.KVClient() #memcache.Client()
-    except Exception:
-        client = memcache.Client()
     # get jsapi_ticket
-
-    jsapi_ticket = client.get(appid+'jsapi_ticket')
-    last_update = client.get(appid+'jsapi_ticket_time')
+    jsapi_ticket = cache.get(appid+'jsapi_ticket')
+    last_update = cache.get(appid+'jsapi_ticket_time')
     if not jsapi_ticket or not last_update or (time.time() - last_update > 7000):
         token = get_token(appid, appsecret)
         ticket_url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%(token)s&type=jsapi'\
@@ -351,8 +344,8 @@ def generate_js_signature(appid, appsecret,url, noncestr):
         result = re.findall('"ticket":"(.*?)"', result)
         if result:
             # save to cache
-            client.set(appid+'jsapi_ticket',result[0])
-            client.set(appid+'jsapi_ticket_time',time.time())
+            cache.set(appid+'jsapi_ticket',result[0])
+            cache.set(appid+'jsapi_ticket_time',time.time())
             jsapi_ticket = result[0]
         else:
             return None
@@ -380,15 +373,10 @@ def get_token(appid, appsecret):
     :return: AccessToekn.
     """
     import time
-    client = None
-    try:
-        client = sae.kvdb.KVClient() #memcache.Client()
-    except Exception:
-        client = memcache.Client()
 
-    last_update = client.get('AccessToeken_time')
-    if last_update and (time.time() - last_update) < 7000 and client.get('AccessToeken'):
-        return client.get('AccessToeken')
+    last_update = cache.get('AccessToeken_time')
+    if last_update and (time.time() - last_update) < 7000 and cache.get('AccessToeken'):
+        return cache.get('AccessToeken')
 
     url = """https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%(appid)s&secret=%(appsecret)s""" \
         % {'appid': appid, 'appsecret': appsecret}
@@ -400,8 +388,8 @@ def get_token(appid, appsecret):
     result = re.findall('"access_token":"(.*?)"', result)
     if result:
         # save to cache
-        client.set('AccessToeken',result[0])
-        client.set('AccessToeken_time',time.time())
+        cache.set('AccessToeken',result[0])
+        cache.set('AccessToeken_time',time.time())
         return result[0]
     return None
 

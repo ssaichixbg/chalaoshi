@@ -22,11 +22,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = 'f_ra_qu7hb5@0q84n%w()m^$&iej+ccwck=l8esu7z3-8*z3tr'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = ['www.chalaoshi.cn', 'chalaoshi.cn','localhost']
+ALLOWED_HOSTS = ['chalaoshi.cn', 'www.chalaoshi.cn', 'ecs.chalaoshi.cn','localhost']
 
 # Application definition
 
@@ -37,8 +37,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'weilib',
     'main_app',
-    #'www',
+    'www',
     'wechat',
     #'debug_toolbar',
 )
@@ -84,7 +85,16 @@ else:
         }
     }
     DEBUG = True
+DATABASES['default']['OPTIONS'] = {'charset':'utf8mb4'} #add emoji support
 
+CACHES = {
+    'default': {
+            'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
+           'LOCATION': '127.0.0.1:11211',
+         }
+}
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
@@ -107,6 +117,9 @@ STATIC_URL = '/static/'
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
+)
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
 )
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

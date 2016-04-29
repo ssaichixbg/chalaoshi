@@ -10,6 +10,7 @@
 </head>
 <body>
 
+{% load nbsp %}
 {% include 'search.html' %}
 
 <div class="main">
@@ -34,59 +35,67 @@
     <div>
         {{ teacher.gpa | safe }}
     </div>
-
-    <script type="text/javascript" language="javascript">
-        function iFrameHeight() {
-            var ifm= document.getElementById("course_list");
-            var subWeb = document.frames ? document.frames["course_list"].document : ifm.contentDocument;
-            if(ifm != null && subWeb != null) {
-                ifm.height = subWeb.body.scrollHeight;
-            }
-        }
-    </script>
     <div class="comment">
-            <hr>
         {% if comments %}
+            <div class="comment-header">
+                <p class="two">{{ comments | length }}个评论</p>
+                <a class="one {% if order_by == "rate" %}highlight{% endif %}" href="?order_by=rate">人气评论</a>
+                <a class="one {% if order_by == "time" %}highlight{% endif %}" href="?order_by=time">最新评论</a>
+            </div>
+            <hr>
             {% for comment in comments  %}
             <div class="row">
                 <div class="left">
                     <p>
-                        <span class="rate-number">7.0 </span>
-                        {{comment.content}}
-                    </p>
-                    <p>
-                        发表于：2015年12月11日
+                        {{ comment.content }}
                     </p>
                 </div>
                 <div class="right">
+                    {% if request.ua_is_wx %}
                     {% if comment.like %}
                     <a class="up iconfont highlight" onclick="rateComment(this,{{comment.pk}},'like')" >&#xe601; </a>
                     {% else %}
                     <a class="up iconfont" onclick="rateComment(this,{{comment.pk}},'like')">&#xe601;  </a>
                     {% endif %}
-                    <p class="{{comment.pk}}-count">{{comment.rate}}</p>
+                    {% endif %}
+                    <p class="{{comment.pk}}-count">{{ comment.rate | rate_center:"3" }}</p>
+                    {% if request.ua_is_wx %}
                     {% if comment.dislike %}
                     <a class="down iconfont highlight" onclick="rateComment(this,{{comment.pk}},'dislike')">&#xe601;</a>
                     {% else %}
                     <a class="down iconfont" onclick="rateComment(this,{{comment.pk}},'dislike')">&#xe601;  </a>
                     {% endif %}
+                    {% endif %}
                 </div>
             </div>
+            <p class="comment-footer">发布于&nbsp;{{ comment.edit_time | date:"Y.m.d" }}</p>
             <hr>
             {% endfor %}
         {% else %}
+            <hr>
             <p class="empty">还没有人点评，快来点击下面的评分吧~</p>
         {% endif %}
         <div style="height: 74px"></div>
     </div>
+{% if request.ua_is_wx %}
 {% if not rated %}
     <a class="rating" href="./rate"><i class="iconfont" style="font-size: 20px">&#xe602; </i> 评分</a>
 {% else %}
     <a class="rating" href="./rate"><i class="iconfont" style="font-size: 20px">&#xe602; </i> 修改评分</a>
 {% endif %}
+{% endif %}
 </div>
 <a class="share-button iconfont hidden" onclick="share();">&#xe609;</a>
 {% include 'footer.html' %}
-<script src="/static/js/rate.js"></script>
+<script type="text/javascript" language="javascript">
+    function iFrameHeight() {
+        var ifm= document.getElementById("course_list");
+        var subWeb = document.frames ? document.frames["course_list"].document : ifm.contentDocument;
+        if(ifm != null && subWeb != null) {
+            ifm.height = subWeb.body.scrollHeight;
+        }
+    }
+</script>
+<script src="/static/js/rate.js?v=3"></script>
 </body>
 </html>

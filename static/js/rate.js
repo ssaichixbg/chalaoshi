@@ -81,8 +81,8 @@
             window.showTip('至少要写3个字哦:(');
             return;
         }
-        if (content.length >=80 ) {
-            window.showTip('最多80个字哦:(');
+        if (content.length >=800 ) {
+            window.showTip('最多800个字哦:(');
             return;
         }
         var forbiddenWords = [
@@ -106,9 +106,12 @@
 })();
 
 function rateComment(a, pk, type) {
-    $a = $(a);
-    $count = $('.'+pk+'-count');
-    count = parseInt($count.html());
+    var $a = $(a);
+    var $count = $('.'+pk+'-count');
+    var count = parseInt($count.text());
+    var len = $count.text().length;
+    var result;
+
     if ($a.hasClass('highlight')) return;
     if ($a.parent().children('.up.highlight').length) count--;
     if ($a.parent().children('.down.highlight').length) count++;
@@ -118,11 +121,17 @@ function rateComment(a, pk, type) {
     $a.addClass('highlight');
 
     if (type == 'like') {
-        $count.html(count + 1);
+        count++;
     }
     else {
-        $count.html(count - 1);
+        count--;
     }
+
+    result = count.toString();
+    for (var i = 0; i < len - count.toString().length; i+=2) {
+        result = '&nbsp;'+result+'&nbsp;';
+    }
+    $count.html(result);
 
     $.get(
         '/comment/' + pk + '/rate',

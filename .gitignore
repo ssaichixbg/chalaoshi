@@ -86,3 +86,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# svn
+.svn
+
+#swap
+*.swp

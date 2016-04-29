@@ -14,6 +14,7 @@ import re
 import csv
 import cookielib
 
+from django.test import TestCase
 from models import *
 
 cookieFileName = 'sdsas'
@@ -57,3 +58,7 @@ def convert_teachers_name():
         print '%s %s' % (teacher.name, teacher.pinyin)
 
 
+#class TeacherRateTests(TestCase):
+#    def test_teacher_dianming_within_zero_and_one:
+#    def test_teacher_rate:
+#    def test_rate_:

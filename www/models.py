@@ -95,20 +95,22 @@ class Teacher(models.Model):
         teachers = Teacher.objects.all()
         key = 'hot_teacher_%s' % str(cid)
 
+        cached_teachers = None#getCache(key)
         if int(cid) >= 0:
-            if not getCache(key):
+            if not cached_teachers:
                 teachers = list(teachers.filter(college=cid).order_by('-hot')[:30])
                 setCache(key,teachers,3600*4)
             else:
-                teachers =getCache(key)
+                teachers = cached_teachers
             return teachers[:n]
 
+
         else:
-            if not getCache(key):
+            if not cached_teachers:
                 teachers = list(teachers.order_by('-hot')[:30])
                 setCache(key,teachers,3600*4)
             else:
-                teachers = getCache(key)
+                teachers = cached_teachers
 
             teachers_top = teachers[0:5]
             teachers_middle = teachers[5:15]
@@ -126,20 +128,21 @@ class Teacher(models.Model):
         teachers = Teacher.objects.all()
         key = 'high_rate_teacher_%s' % str(cid)
 
+        cached_teachers = None#getCache(key)
         if int(cid) >= 0:
-            if not getCache(key):
+            if not cached_teachers:
                 teachers = list(teachers.filter(college=cid).order_by('-rate')[:30])
                 setCache(key,teachers,3600*4)
             else:
-                teachers =getCache(key)
+                teachers = cached_teachers
             return teachers[:n]
 
         else:
-            if not getCache(key):
+            if not cached_teachers:
                 teachers = list(teachers.order_by('-rate')[:30])
                 setCache(key,teachers,3600*4)
             else:
-                teachers = getCache(key)
+                teachers = cached_teachers
 
             teachers_top = teachers[0:5]
             teachers_middle = teachers[5:15]
@@ -162,11 +165,18 @@ class Teacher(models.Model):
         teachers = []
         if kw == '':
             teachers = Teacher.objects.all()
+        elif isinstance(kw, list):
+            q = Q(pk=-1)
+            for w in kw:
+                q = Q(name=w) | q
+            teachers = Teacher.objects.all().filter(q)
+            teachers = teachers.order_by('-hot')[:40]
         else:
             teachers = Teacher.objects.all().filter(Q(name__contains=kw) | Q(pinyin__startswith=kw))
-        teachers = teachers.order_by('-hot')[:20]
+            teachers = teachers.order_by('-hot')[:20]
 
         key = str('search_teacher_%s'%kw)
+
         if getCache(key):
             return getCache(key)
         else:
@@ -197,6 +207,21 @@ class Comment(models.Model):
         # del cache
         key = str('comment_%s' % self.teacher.id)
         delCache(key)
+
+    def __getattribute__(self, item):
+        def get_teacher():
+            key = 'teacher_%s' % self.teacher_id
+            teacher = getCache(key)
+            if teacher:
+                return teacher
+            teacher = models.Model.__getattribute__(self, 'teacher')
+            setCache(key, teacher)
+            return teacher
+
+        if item == 'teacher':
+            return get_teacher()
+
+        return models.Model.__getattribute__(self, item)
 
     @staticmethod
     def add_comment(teacher, text, uuid):
@@ -306,7 +331,7 @@ class Rate(models.Model):
     create_time = models.DateTimeField(auto_now_add=True)
     edit_time = models.DateTimeField(auto_now=True)
 
-    teacher = models.ForeignKey(Teacher)
+    teacher = models.ForeignKey(Teacher,related_name='teacher+')
     uuid = models.BigIntegerField()
 
     rate = models.IntegerField()
@@ -347,16 +372,14 @@ class Rate(models.Model):
                 return result
 
             # cache missed
-            rates = Rate.objects.all().filter(teacher=teacher)
-            rate_sum = 0.0
-            check_ins = 0.0
+            rates = list(Rate.objects.all().filter(teacher=teacher))
+            check_in_list = []
             for rate in rates:
-                rate_sum += rate.rate
-                check_ins += rate.check_in
+                check_in_list.append(rate.check_in)
 
-            count = rates.count()
-            rate = rate_sum / max(1,count)
-            check_in = check_ins / max(1,count) * 100
+            count = len(check_in_list)
+            rate = teacher.rate
+            check_in = sum(check_in_list)
 
             result = (count, rate, check_in)
             setCache(key, result)
@@ -380,6 +403,9 @@ class Rate(models.Model):
                 rate.check_in = check_in
                 rate.save()
 
+                #del cache
+                key = 'rate_%s' % teacher.id
+                delCache(key)
                 return rate
 
     def __unicode__(self):
@@ -414,9 +440,36 @@ class LogOnTeacher(models.Model):
         log.url = url
         log.save()
 
+class OpenID(models.Model):
+    '''This model is to translate OpenID in wechat to uuid'''
+    create_time = models.DateTimeField(auto_now_add=True)
+    openid = models.CharField(max_length=100)
+    uuid = models.BigIntegerField(default=0)
+    
+    @staticmethod
+    def get_or_create(openid, uuid=''):
+        if not isinstance(uuid, int):
+            try:
+                uuid = int(uuid)
+            except:
+                uuid = 0
+
+        oid = OpenID.objects.all().filter(openid=openid)
+        if not oid.exists():
+            if uuid == '':
+                return
+            oid = OpenID()
+            oid.openid = openid
+            oid.uuid = uuid
+            oid.save()
+        else:
+            oid = oid[0]
+        return oid
+
 class SNSVisitLog(models.Model):
-    crate_time = models.DateTimeField(auto_now_add=True)
+    create_time = models.DateTimeField(auto_now_add=True)
 
     ip = models.CharField(max_length=50)
     source = models.CharField(max_length=100)
     uuid = models.BigIntegerField()
+    path = models.TextField()

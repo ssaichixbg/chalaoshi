@@ -21,7 +21,7 @@ routers = [db_router, base_router]
 
 
 def update_menu_to_wechat(request):
-    rep = post_menu(settings.WECHAT.APPID, settings.WECHAT.SECRET)
+    rep = post_menu(settings.WECHAT['APPID'], settings.WECHAT['SECRET'])
     return render_to_response('send/menu_create.json', {'menu_list': create_btns()})
 
 
@@ -33,19 +33,49 @@ def test_ua(request):
     #if not (wx_ua in ua or wp in ua or dnspod in ua):
     #    return HttpResponsePermanentRedirect('http://weixin.qq.com')
 
+def wx_userinfo_callback(request):
+    import urllib2
+    import urllib
+    def url_add_params(url, **params):  
+        import urlparse
+        pr = urlparse.urlparse(url)
+        query = dict(urlparse.parse_qsl(pr.query))  
+        query.update(params)  
+        prlist = list(pr)  
+        prlist[4] = urllib.urlencode(query)  
+        return urlparse.ParseResult(*prlist).geturl()
 
+    redirect = request.session.get('redirect','/')
+    code = request.GET.get('code','')
+    state = request.GET.get('state','')
+    if code == '' or not state == settings.WECHAT['TOKEN']:
+        return HttpResponseRedirect('/')
+    
+    url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code' % (
+        settings.WECHAT['APPID'],
+        settings.WECHAT['SECRET'],
+        code,
+    ) 
+    response = urllib2.urlopen(url).read()
+    dic = json.loads(response)
+    
+    openid = dic['openid']
+    request.session['openid'] = openid
+    request.session['redirect'] = ''
+    
+    redirect = url_add_params(redirect, redirected='1')
+    response = HttpResponseRedirect(redirect)
+
+    return response
 @csrf_exempt
 def wx_js_sign(request):
     url = request.POST.get('url','')
-    wx = generate_js_signature(settings.WECHAT.APPID,APP_SEC,settings.WECHAT.SECRET)
+    wx = generate_js_signature(settings.WECHAT['APPID'],settings.WECHAT['SECRET'], url, settings.WECHAT['TOKEN'])
     return HttpResponse(json.dumps(wx))
 
 
 @csrf_exempt
 def home(request):
-    if not check_signature(request, settings.WECHAT.TOKEN):
-        return HttpResponse('Hello World!')
-
     if request.method == 'GET':
         response = HttpResponse()
         response.write(request.GET.get('echostr'))

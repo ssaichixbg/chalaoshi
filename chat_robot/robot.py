@@ -11,7 +11,7 @@ def get_reply(content,openId=''):
         # }
         # response = urllib2.urlopen('http://www.xiaohuangji.com/ajax.php', data=urllib.urlencode(params))
         params = {
-            'key': 'e992b973ec7146808c4cb904a84751e4',
+            'key': 'e49b7f8beae66073faed68da3fc12a4e',
             'info': content,
             'userid':openId,
 

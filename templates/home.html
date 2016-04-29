@@ -66,8 +66,12 @@
     <p>您可以畅所欲言</p>
 </div>
 
+<script>
+    var search_url = '{{ search_url | safe}}';
+</script>
+
 {% include 'footer.html' %}
 <script src="/static/js/swipe.js"></script>
-<script src="/static/js/home.js"></script>
+<script src="/static/js/home.js?v=1"></script>
 </body>
 </html>

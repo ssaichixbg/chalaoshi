@@ -1,7 +1,7 @@
 # coding:utf-8
 # in folder 'core'
 from django.contrib import admin
-from main_app.models import *
+from .models import *
 
 from .cache import *
 
@@ -61,8 +61,8 @@ class LogOnTeacherAdmin(admin.ModelAdmin):
     list_display = ('create_time','teacher','url','uuid')
 
 class SNSVisitLogAdmin(admin.ModelAdmin):
-    list_display = ('crate_time','ip','source',)
-    list_filter = ('crate_time','source',)
+    list_display = ('create_time','ip','source',)
+    list_filter = ('create_time','source',)
 
 admin.site.register(SNSVisitLog, SNSVisitLogAdmin)
 admin.site.register(School, SchoolAdmin)

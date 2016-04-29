@@ -10,5 +10,5 @@ admin.autodiscover()
 urlpatterns = patterns('',
         url(r'^mmm/', include(admin.site.urls)),
         url(r'^wechat/', include(wechat.urls)),
-        url(r'^.*', include(www.urls)),
-)
+        url(r'^', include(www.urls)),
+) + static.static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
