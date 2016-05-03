@@ -41,8 +41,31 @@ INSTALLED_APPS = (
     'main_app',
     'www',
     'wechat',
-    #'debug_toolbar',
+    'debug_toolbar', # for debug
+    'memcache_toolbar',
 )
+
+if DEBUG:
+    import memcache_toolbar.panels.pylibmc
+DEBUG_TOOLBAR_PANELS = [
+    'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.settings.SettingsPanel',
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    'debug_toolbar.panels.cache.CachePanel',
+    'debug_toolbar.panels.signals.SignalsPanel',
+    'debug_toolbar.panels.logging.LoggingPanel',
+    'debug_toolbar.panels.redirects.RedirectsPanel',
+    'memcache_toolbar.panels.pylibmc.PylibmcPanel',
+]
+
+CONFIG_DEFAULTS = {
+    'JQUERY_URL' : '//cdn.bootcss.com/jquery/2.2.1/jquery.min.js'
+}
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -52,14 +75,14 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
-X_FRAME_OPTIONS = 'ALLOW-FROM http://www.zjustudy.com.cn'
+#X_FRAME_OPTIONS = 'ALLOW-FROM http://www.zjustudy.com.cn'
 ROOT_URLCONF = 'main_app.urls'
 APPEND_SLASH = True
 
 WSGI_APPLICATION = 'main_app.wsgi.application'
 
 
-# Database
+# Database & Cache
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 DATABASES = None
 if 'PRODUCTION' in env:
@@ -95,6 +118,8 @@ CACHES = {
 }
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
@@ -118,10 +143,12 @@ STATIC_URL = '/static/'
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
 )
+
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
+# Email Config
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 FROM_EMAIL = '自动发送<contact@zjustudy.com.cn>'
 EMAIL_HOST = 'smtp.exmail.qq.com'
@@ -130,6 +157,7 @@ EMAIL_HOST_USER = 'contact@zjustudy.com.cn'
 EMAIL_HOST_PASSWORD = ''
 #EMAIL_USE_TLS = True
 
+# Wechat Config
 WECHAT = {}
 if 'PRODUCTION' in env:
     WECHAT['APPID'] = env['wechat_chalaoshi_appid']
