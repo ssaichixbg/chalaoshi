@@ -58,11 +58,14 @@ class LogOnSearchAdmin(admin.ModelAdmin):
 
 
 class LogOnTeacherAdmin(admin.ModelAdmin):
-    list_display = ('create_time','teacher','url','uuid')
+    list_display = ('create_time','teacher','url','uuid',)
 
 class SNSVisitLogAdmin(admin.ModelAdmin):
     list_display = ('create_time','ip','source',)
     list_filter = ('create_time','source',)
+
+class OpenIDAdmin(admin.ModelAdmin):
+    list_display = ('create_time','openid','uuid',)
 
 admin.site.register(SNSVisitLog, SNSVisitLogAdmin)
 admin.site.register(School, SchoolAdmin)
@@ -72,3 +75,4 @@ admin.site.register(Comment, CommentAdmin)
 admin.site.register(Rate, RateAdmin)
 admin.site.register(LogOnSearch, LogOnSearchAdmin)
 admin.site.register(LogOnTeacher, LogOnTeacherAdmin)
+admin.site.register(OpenID, OpenIDAdmin)
