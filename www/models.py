@@ -1,4 +1,5 @@
 # coding:utf-8
+
 import json
 
 from django.db import models
@@ -12,6 +13,7 @@ COMMENT_STATUS = (
     (-1,'删除'),
 )
 
+MIN_RATE_COUNT = 5
 # Create your models here.
 class School(models.Model):
     name = models.CharField(max_length=100)
@@ -61,6 +63,7 @@ class College(models.Model):
 
 
 class Teacher(models.Model):
+    
     name = models.CharField(max_length=100)
     college = models.ForeignKey(College)
     hot = models.IntegerField(default=0)
@@ -72,6 +75,8 @@ class Teacher(models.Model):
         from tools import convert2PY
         if not self.pinyin or len(self.pinyin) == 0:
             self.pinyin = convert2PY(self.name)
+        rate_distribution_key = 'rate_distribution'
+        delCache(rate_distribution_key)
         super(Teacher, self).save(*args, **kwargs)
 
     def __getattribute__(self, item):
@@ -183,6 +188,24 @@ class Teacher(models.Model):
             teachers = list(teachers)
             setCache(key,teachers,60*60*24)
             return teachers
+    
+    @staticmethod
+    def get_teacher_rate_distribution():
+        rate_distribution_key = 'rate_distribution'
+        result = getCache(rate_distribution_key)
+
+        if result is not None:
+            return result
+
+        teachers = Teacher.objects.all().only('rate')
+        distribution = {}
+        for t in teachers:
+            index = int(t.rate)
+            distribution.setdefault(index,0)
+            distribution[index] += 1
+        
+        setCache(rate_distribution_key, distribution)
+        return distribution
 
     def __unicode__(self):
         return self.name
@@ -407,7 +430,7 @@ class Rate(models.Model):
                 key = 'rate_%s' % teacher.id
                 delCache(key)
                 return rate
-
+    
     def __unicode__(self):
         return '%s %d' % (self.teacher.name,self.uuid)
 
@@ -472,4 +495,4 @@ class SNSVisitLog(models.Model):
     ip = models.CharField(max_length=50)
     source = models.CharField(max_length=100)
     uuid = models.BigIntegerField()
-    path = models.TextField()
+    path = models.CharField(max_length=200)

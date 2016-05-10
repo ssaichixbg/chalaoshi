@@ -1,21 +1,28 @@
 import time
 import datetime
+import copy
 
 from django.http import *
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
-
+from django.utils.timezone import now
 
 from .models import *
 from .cache import *
 time_coefficients = [10,8,4,2,1]
 
-def clear_rank_cache(request):
-    hot_teacher_key = 'hot_teacher_%s' % str(-1)
-    delCache(hot_teacher_key)
-    high_rate_teacher_key = 'high_rate_teacher_%s' % str(-1)
-    delCache(high_rate_teacher_key)
-    return HttpResponse(0)
+def clear_rank_cache(request=None):
+    colleges = College.objects.all()
+    keys = [c.pk for c in colleges]
+    keys.append(-1)
+
+    for key in keys:
+        hot_teacher_key = 'hot_teacher_%s' % str(key)
+        delCache(hot_teacher_key)
+        high_rate_teacher_key = 'high_rate_teacher_%s' % str(key)
+        delCache(high_rate_teacher_key)
+    if request:
+        return HttpResponse(0)
 ##
 # offline calculation for hot of teachers
 #
@@ -32,8 +39,8 @@ def cal_hot(request=None):
         detail = []
         for i in range(0,5):
             time_coefficient = time_coefficients[i]
-            dt1 = datetime.datetime.now() - datetime.timedelta(days=i)
-            dt2 = datetime.datetime.now() - datetime.timedelta(days=i+1)
+            dt1 = now() - datetime.timedelta(days=i)
+            dt2 = now() - datetime.timedelta(days=i+1)
 
             logTs = logOnTeachers.filter(teacher=teacher,create_time__lt=dt1)
             cms = comments.filter(teacher=teacher,create_time__lt=dt1)
@@ -72,8 +79,7 @@ def cal_rate(request=None):
         teacher_rates = {}
         for rate in rates:
             pk = rate.teacher_id
-            if not teacher_rates.has_key(pk):
-                teacher_rates[pk] = []
+            teacher_rates.setdefault(pk,[])
             teacher_rates[pk].append(rate.rate)
         return teacher_rates
 
@@ -83,30 +89,31 @@ def cal_rate(request=None):
     teacher_rates = []
     for rate in rates:
         teacher_rates.append(rate.rate)
-    teacher_ave = sum(teacher_rates) / len(teacher_rates)
+    teacher_ave = sum(teacher_rates) * 1.0 / len(teacher_rates)
 
     teacher_rates = devide_rate(rates)
     teachers = Teacher.objects.all()
     for teacher in teachers:
-        rate_list = teacher_rates[teacher.pk]
+        rate_list = copy.copy(teacher_rates.get(teacher.pk,[]))
         count = len(rate_list)
         eff = max(1,int(count*0.2))
 
         if count >=5:
             rate_list = rate_list[eff:]
             rate_list = rate_list[:len(rate_list)-eff]
-            ave_rate = sum(rate_list) / len(rate_list)
-            rate = count / ( 5 + count) * ave_rate + \
-                           5 / (5 + count) * teacher_ave
-            #teacher.save()
-            results.append((teacher.name, teacher.rate,rate,count, ))
+            ave_rate = sum(rate_list) * 1.0 / len(rate_list)
+            rate = 1.0 * count / ( 2 + count) * ave_rate + \
+                           2.0 / (2 + count) * teacher_ave
+            teacher.rate = rate
+            results.append((teacher.name, ave_rate, rate, count,teacher_rates.get(teacher.pk,[]) ))
         else:
             teacher.rate = 0
 
-        #teacher.save()
+        teacher.save()
+    html += '<h5>%.2f</h5>' % teacher_ave
     results.sort(key=lambda result: -result[1])
     for result in results:
-        html += '<tr><td>%s</td><td>%.1f</td><td>%.1f</td><td>%d</td></tr>' % (result[0], result[1],result[2], result[3])
+        html += '<tr><td>%s</td><td>%.1f</td><td>%.1f</td><td>%d</td>i<td>%s</td></tr>' % (result[0], result[1],result[2], result[3], str(result[4]))
 
     html += '</table>'
 

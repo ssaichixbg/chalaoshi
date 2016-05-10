@@ -105,7 +105,7 @@ def before(func):
         
         # redirect to OpenID url
         response = None
-        if not 'openid' in request.session and request.ua_is_wx:
+        if 'openid' not in request.session and request.ua_is_wx:
             from urllib import quote
             callback_url = quote('http://ecs.chalaoshi.cn/wechat/wx_userinfo_callback')
             request.session['redirect'] = 'http://'+request.get_host()+request.get_full_path()
@@ -213,6 +213,9 @@ def teacher_detail(request,tid):
     if count <= MIN_COUNT:
         rate = 'N/A'
     else:
+        if not settings.DEBUG:
+            rate = max(10,rate)
+            check_in = max(100,check_in)
         rate = '%.2f' % rate
         check_in = '%.1f' % check_in
         not_empty = True

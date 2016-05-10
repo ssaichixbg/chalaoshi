@@ -10,7 +10,10 @@ def setCache(key,value,time=0):
         print 'set cache for key', key, value
 
 def delCache(key):
-    mc.delete(key)
+    if isinstance(key, list):
+        mc.delete_many(key)
+    else:
+        mc.delete(key)
     if settings.DEBUG and DISPLAY_DEBUG:
         print 'del cache for key ', key
 
