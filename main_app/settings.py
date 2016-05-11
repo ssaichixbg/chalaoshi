@@ -39,12 +39,15 @@ INSTALLED_APPS = (
     'main_app',
     'www',
     'wechat',
-    'debug_toolbar', # for debug
     'memcache_toolbar',
+    'debug_toolbar', # for debug,
 )
 
 if DEBUG:
     import memcache_toolbar.panels.pylibmc
+
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
+
 DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.versions.VersionsPanel',
     'debug_toolbar.panels.timer.TimerPanel',
@@ -61,9 +64,12 @@ DEBUG_TOOLBAR_PANELS = [
     'memcache_toolbar.panels.pylibmc.PylibmcPanel',
 ]
 
-CONFIG_DEFAULTS = {
-    'JQUERY_URL' : '//cdn.bootcss.com/jquery/2.2.1/jquery.min.js'
+DEBUG_TOOLBAR_CONFIG = {
+    'JQUERY_URL' : '//cdn.bootcss.com/jquery/2.2.1/jquery.min.js',
 }
+DEBUG_TOOLBAR_CONFIG = { 'JQUERY_URL' : "http://code.jquery.com/jquery-2.1.1.min.js" }
+
+INTERNAL_IPS = ['101.231.69.134',] 
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -72,6 +78,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 #X_FRAME_OPTIONS = 'ALLOW-FROM http://www.zjustudy.com.cn'
 ROOT_URLCONF = 'main_app.urls'
@@ -143,6 +150,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS':[
                 os.path.join(BASE_DIR, 'templates'),
+                '/usr/local/lib/python2.7/dist-packages/debug_toolbar/templates/debug_toolbar',
             ],
         'APP_DIRS': True,
         'OPTIONS': {

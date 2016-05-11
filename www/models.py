@@ -100,7 +100,7 @@ class Teacher(models.Model):
         teachers = Teacher.objects.all()
         key = 'hot_teacher_%s' % str(cid)
 
-        cached_teachers = None#getCache(key)
+        cached_teachers = getCache(key)
         if int(cid) >= 0:
             if not cached_teachers:
                 teachers = list(teachers.filter(college=cid).order_by('-hot')[:30])
@@ -133,7 +133,7 @@ class Teacher(models.Model):
         teachers = Teacher.objects.all()
         key = 'high_rate_teacher_%s' % str(cid)
 
-        cached_teachers = None#getCache(key)
+        cached_teachers = getCache(key)
         if int(cid) >= 0:
             if not cached_teachers:
                 teachers = list(teachers.filter(college=cid).order_by('-rate')[:30])
