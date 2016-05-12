@@ -22,11 +22,37 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = 'f_ra_qu7hb5@0q84n%w()m^$&iej+ccwck=l8esu7z3-8*z3tr'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False #True
 
 ALLOWED_HOSTS = ['chalaoshi.cn', 'www.chalaoshi.cn', 'ecs.chalaoshi.cn','localhost']
 
 # Application definition
+
+if DEBUG:
+    import memcache_toolbar.panels.pylibmc
+
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
+
+DEBUG_TOOLBAR_PANELS = [
+    'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.profiling.ProfilingPanel', 
+    'debug_toolbar.panels.settings.SettingsPanel',
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    #'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    'debug_toolbar.panels.cache.CachePanel',
+    #'debug_toolbar.panels.signals.SignalsPanel',
+    #'debug_toolbar.panels.logging.LoggingPanel',
+    #'debug_toolbar.panels.redirects.RedirectsPanel',
+    'memcache_toolbar.panels.pylibmc.PylibmcPanel',
+]
+
+DEBUG_TOOLBAR_CONFIG = {"JQUERY_URL": "http://code.jquery.com/jquery-2.1.1.min.js"}
+
+INTERNAL_IPS = ['101.231.69.134',] 
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -40,36 +66,8 @@ INSTALLED_APPS = (
     'www',
     'wechat',
     'memcache_toolbar',
-    'debug_toolbar', # for debug,
+    #'debug_toolbar', # for debug,
 )
-
-if DEBUG:
-    import memcache_toolbar.panels.pylibmc
-
-DEBUG_TOOLBAR_PATCH_SETTINGS = False
-
-DEBUG_TOOLBAR_PANELS = [
-    'debug_toolbar.panels.versions.VersionsPanel',
-    'debug_toolbar.panels.timer.TimerPanel',
-    'debug_toolbar.panels.settings.SettingsPanel',
-    'debug_toolbar.panels.headers.HeadersPanel',
-    'debug_toolbar.panels.request.RequestPanel',
-    'debug_toolbar.panels.sql.SQLPanel',
-    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-    'debug_toolbar.panels.templates.TemplatesPanel',
-    'debug_toolbar.panels.cache.CachePanel',
-    'debug_toolbar.panels.signals.SignalsPanel',
-    'debug_toolbar.panels.logging.LoggingPanel',
-    'debug_toolbar.panels.redirects.RedirectsPanel',
-    'memcache_toolbar.panels.pylibmc.PylibmcPanel',
-]
-
-DEBUG_TOOLBAR_CONFIG = {
-    'JQUERY_URL' : '//cdn.bootcss.com/jquery/2.2.1/jquery.min.js',
-}
-DEBUG_TOOLBAR_CONFIG = { 'JQUERY_URL' : "http://code.jquery.com/jquery-2.1.1.min.js" }
-
-INTERNAL_IPS = ['101.231.69.134',] 
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -78,7 +76,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    #'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 #X_FRAME_OPTIONS = 'ALLOW-FROM http://www.zjustudy.com.cn'
 ROOT_URLCONF = 'main_app.urls'
@@ -150,7 +148,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS':[
                 os.path.join(BASE_DIR, 'templates'),
-                '/usr/local/lib/python2.7/dist-packages/debug_toolbar/templates/debug_toolbar',
+                '/usr/local/lib/python2.7/dist-packages/debug_toolbar/templates',
             ],
         'APP_DIRS': True,
         'OPTIONS': {

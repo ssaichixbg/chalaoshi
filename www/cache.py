@@ -1,7 +1,7 @@
 import pylibmc as memcache
 from django.conf import settings
 
-DISPLAY_DEBUG = True
+DISPLAY_DEBUG = False
 mc = memcache.Client(['127.0.0.1'])
 
 def setCache(key,value,time=0):

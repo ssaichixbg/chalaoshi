@@ -213,11 +213,12 @@ def teacher_detail(request,tid):
     if count <= MIN_COUNT:
         rate = 'N/A'
     else:
+        check_in = float(check_in ) / count * 100
         if not settings.DEBUG:
-            rate = max(10,rate)
-            check_in = max(100,check_in)
+            rate = min(10.0,rate)
+            check_in = min(100.0,check_in)
         rate = '%.2f' % rate
-        check_in = '%.1f' % check_in
+        check_in = '%.1f' % check_in#(float(check_in ) / count * 100)
         not_empty = True
 
     # Get teacher's gpa from zjustudy
