@@ -12,7 +12,7 @@ from django.conf import settings
 from .models import *
 
 # minimum count of rate needed for display
-MIN_COUNT = 1
+MIN_COUNT = 4
 
 def before(func):
     def generate_uuid(ip):
@@ -152,6 +152,12 @@ def home(request):
             search_url += 'q=%s&' % urllib.quote(keyword.encode('UTF-8'))
 
     request.session['college'] = college_id
+
+    # wechat share
+    request.share = {
+        'desc':'查老师，浙江大学非官方匿名教评系统。在这里，一切都是匿名的，您可以畅所欲言。期末选课必备神器！',
+        'title':'查老师',
+    }
     response = render_to_response('home.html',locals())
     return response
 
@@ -228,6 +234,16 @@ def teacher_detail(request,tid):
     # Add log
     LogOnTeacher.add_log(teacher,request.get_full_path(),request.session['uuid'])
     college= teacher.college
+
+    # wechat share
+    desc = '%d人评价 %s分 有%s%%的人认为老师点名 ' % (count, rate, check_in)
+    if comments:
+        desc += str(comments[0].content)
+    request.share = {
+        'desc': desc,
+        'title': '听%s老师(%s分)的课是怎样的一种体验 - 查老师' % (teacher.name, rate)
+    }
+
     response = render_to_response('teacher_detail.html',locals())
     return response
 
