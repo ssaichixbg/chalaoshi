@@ -25,6 +25,6 @@ urlpatterns += [
         url(r'^teacher/(?P<tid>\d+)/rate$',teacher_rate, name='teacher_rate'),
 
         url(r'^comment/(?P<cid>\d+)/rate$',comment_rate),
-        url(r'(\w+.\w+)$',to_static_img),
+        url(r'(\w+\.\w+)$',to_static_img),
         url(r'^$', home),
 ]

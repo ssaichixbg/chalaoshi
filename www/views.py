@@ -107,7 +107,7 @@ def before(func):
         response = None
         if 'openid' not in request.session and request.ua_is_wx:
             from urllib import quote
-            callback_url = quote('http://ecs.chalaoshi.cn/wechat/wx_userinfo_callback')
+            callback_url = quote('http://chalaoshi.cn/wechat/wx_userinfo_callback')
             request.session['redirect'] = 'http://'+request.get_host()+request.get_full_path()
             response = HttpResponseRedirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_base&state=%s#wechat_redirect' % (settings.WECHAT['APPID'], callback_url, settings.WECHAT['TOKEN']))
         else:
@@ -156,7 +156,6 @@ def home(request):
     # wechat share
     request.share = {
         'desc':'查老师，浙江大学非官方匿名教评系统。在这里，一切都是匿名的，您可以畅所欲言。期末选课必备神器！',
-        'title':'查老师',
     }
     response = render_to_response('home.html',locals())
     return response
@@ -238,10 +237,10 @@ def teacher_detail(request,tid):
     # wechat share
     desc = '%d人评价 %s分 有%s%%的人认为老师点名 ' % (count, rate, check_in)
     if comments:
-        desc += str(comments[0].content)
+        desc += str(comments[0].content.encode('utf-8'))
     request.share = {
         'desc': desc,
-        'title': '听%s老师(%s分)的课是怎样的一种体验 - 查老师' % (teacher.name, rate)
+        'title': u'听%s老师(%s分)的课是怎样的一种体验 - 查老师' % (teacher.name, rate)
     }
 
     response = render_to_response('teacher_detail.html',locals())
