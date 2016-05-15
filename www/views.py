@@ -52,7 +52,7 @@ def before(func):
         })
         wx = {}
         try:
-            wx = json.loads(urllib2.urlopen('http://ecs.chalaoshi.cn/wechat/wx_js_sign',data,timeout=1).read())
+            wx = json.loads(urllib2.urlopen('http://chalaoshi.cn/wechat/wx_js_sign',data,timeout=1).read())
         except Exception, e:
             raise e
         return wx

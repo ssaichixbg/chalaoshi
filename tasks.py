@@ -8,7 +8,8 @@ django.setup()
 import www.tasks as tasks
 
 f = open('/var/log/chalaoshi/tasks.log','a')
-try:
+try:    
+    f.write('%s: start chalaoshi tasks.\n' % datetime.now())
     tasks.cal_rate()
     f.write('%s: cal_rate finished.\n' % datetime.now())
     tasks.cal_hot()
