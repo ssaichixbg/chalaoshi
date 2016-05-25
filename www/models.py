@@ -182,12 +182,12 @@ class Teacher(models.Model):
 
         key = str('search_teacher_%s'%kw)
 
-        if getCache(key):
-            return getCache(key)
-        else:
-            teachers = list(teachers)
-            setCache(key,teachers,60*60*24)
-            return teachers
+        #if getCache(key):
+        #    return getCache(key)
+        #else:
+        teachers = list(teachers)
+        #    setCache(key,teachers,60*60*24)
+        return teachers
     
     @staticmethod
     def get_teacher_rate_distribution():

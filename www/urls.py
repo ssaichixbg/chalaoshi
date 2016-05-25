@@ -15,6 +15,10 @@ urlpatterns = [
 ]
 
 urlpatterns += [
+        url(r'^test/clear_session',clear_session),
+]
+
+urlpatterns += [
         #url(r'^signin','signin'),
         url(r'^upload_teachers',upload_teachers),
         url(r'^search$',search),

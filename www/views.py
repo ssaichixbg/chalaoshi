@@ -208,7 +208,7 @@ def teacher_detail(request,tid):
             return comments
 
     teacher = Teacher.objects.all().filter(pk=int(tid))
-    if teacher is None:
+    if not teacher:
         return HttpResponseNotFound()
     teacher = teacher[0]
 
@@ -369,6 +369,11 @@ def feedback(request):
         msg.send()
 
         return HttpResponseRedirect('/')
+
+def clear_session(request):
+    request.session.pop('uuid')
+    request.session.pop('openid')
+    return HttpResponse('Done')
 
 def to_static_img(request, file):
     return HttpResponsePermanentRedirect('/static/img/' + file)
