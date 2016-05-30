@@ -375,5 +375,15 @@ def clear_session(request):
     request.session.pop('openid')
     return HttpResponse('Done')
 
+@before
+def robot_txt(request):
+    if request.ua_is_spider:
+        return HttpResponse("""
+        User-agent: *
+        Disallow: /static/
+        """)   
+    else :
+        return HttpResponse('')
+
 def to_static_img(request, file):
     return HttpResponsePermanentRedirect('/static/img/' + file)
