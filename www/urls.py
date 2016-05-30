@@ -8,8 +8,8 @@ from .tasks import *
 admin.autodiscover()
 
 urlpatterns = [
-        url(r'^task/cal_hot$', cal_hot, name='cal_hot'),
-        url(r'^task/cal_rate$', cal_rate, name='cal_rate'),
+        #url(r'^task/cal_hot$', cal_hot, name='cal_hot'),
+        #url(r'^task/cal_rate$', cal_rate, name='cal_rate'),
         #url(r'^task/backup_db', 'backup_db'),
         url(r'^task/clear_rank_cache', clear_rank_cache, name= 'clear_rank_cache'),
 ]
@@ -20,7 +20,7 @@ urlpatterns += [
 
 urlpatterns += [
         #url(r'^signin','signin'),
-        url(r'^upload_teachers',upload_teachers),
+        #url(r'^upload_teachers',upload_teachers),
         url(r'^search$',search),
         url(r'^feedback$',feedback),
 
@@ -29,6 +29,9 @@ urlpatterns += [
         url(r'^teacher/(?P<tid>\d+)/rate$',teacher_rate, name='teacher_rate'),
 
         url(r'^comment/(?P<cid>\d+)/rate$',comment_rate),
+        
+        url(r'robot.txt', robot_txt),
+        #url(r'sitemap.xml', sitemap),
         url(r'(\w+\.\w+)$',to_static_img),
         url(r'^$', home),
 ]
