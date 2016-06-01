@@ -37,7 +37,7 @@ wx.ready(function() {
     wx.onMenuShareTimeline({
         title: {% if request.share.title %}"{{ request.share.title }}"{% else %}document.title{% endif %}, // 分享标题
         link: location.href, // 分享链接
-        imgUrl: "http://ecs.chalaoshi.cn/static/img/chalaoshi.png", // 分享图标
+        imgUrl: "http://chalaoshi.cn/static/img/chalaoshi.png", // 分享图标
         success: function () {
             // 用户确认分享后执行的回调函数
         },
@@ -50,7 +50,7 @@ wx.ready(function() {
         title: {% if request.share.title %}"{{ request.share.title }}"{% else %}document.title{% endif %}, // 分享标题
         desc: "{{ request.share.desc }}", // 分享描述
         link: location.href, // 分享链接
-        imgUrl: "http://ecs.chalaoshi.cn/static/img/chalaoshi.png", // 分享图标
+        imgUrl: "http://chalaoshi.cn/static/img/chalaoshi.png", // 分享图标
         type: "", // 分享类型,music、video或link，不填默认为link
         dataUrl: "", // 如果type是music或video，则要提供数据链接，默认为空
         success: function () {
@@ -65,7 +65,7 @@ wx.ready(function() {
         title: {% if request.share.title %}"{{ request.share.title }}"{% else %}document.title{% endif %}, // 分享标题
         desc: "{{ request.share.desc }}", // 分享描述
         link: location.href, // 分享链接
-        imgUrl: "http://ecs.chalaoshi.cn/static/img/chalaoshi.png", // 分享图标
+        imgUrl: "http://chalaoshi.cn/static/img/chalaoshi.png", // 分享图标
         success: function () {
            // 用户确认分享后执行的回调函数
         },
@@ -78,7 +78,7 @@ wx.ready(function() {
         title: {% if request.share.title %}"{{ request.share.title }}"{% else %}document.title{% endif %}, // 分享标题
         desc: "{{ request.share.desc }}", // 分享描述
         link: location.href, // 分享链接
-        imgUrl: "http://ecs.chalaoshi.cn/static/img/chalaoshi.png", // 分享图标
+        imgUrl: "http://chalaoshi.cn/static/img/chalaoshi.png", // 分享图标
         success: function () {
            // 用户确认分享后执行的回调函数
         },
@@ -92,7 +92,7 @@ wx.ready(function() {
         title: {% if request.share.title %}"{{ request.share.title }}"{% else %}document.title{% endif %}, // 分享标题
         desc: "{{ request.share.desc }}", // 分享描述
         link: location.href , // 分享链接
-        imgUrl: "http://ecs.chalaoshi.cn/static/img/chalaoshi.png", // 分享图标
+        imgUrl: "http://chalaoshi.cn/static/img/chalaoshi.png", // 分享图标
         success: function () { 
            // 用户确认分享后执行的回调函数
         },
