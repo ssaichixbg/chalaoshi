@@ -52,7 +52,7 @@ def before(func):
         })
         wx = {}
         try:
-            wx = json.loads(urllib2.urlopen('http://ecs.chalaoshi.cn/wechat/wx_js_sign',data,timeout=1).read())
+            wx = json.loads(urllib2.urlopen('http://chalaoshi.cn/wechat/wx_js_sign',data,timeout=1).read())
         except Exception, e:
             raise e
         return wx
@@ -107,7 +107,7 @@ def before(func):
         response = None
         if 'openid' not in request.session and request.ua_is_wx:
             from urllib import quote
-            callback_url = quote('http://ecs.chalaoshi.cn/wechat/wx_userinfo_callback')
+            callback_url = quote('http://chalaoshi.cn/wechat/wx_userinfo_callback')
             request.session['redirect'] = 'http://'+request.get_host()+request.get_full_path()
             response = HttpResponseRedirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_base&state=%s#wechat_redirect' % (settings.WECHAT['APPID'], callback_url, settings.WECHAT['TOKEN']))
         else:
@@ -155,8 +155,8 @@ def home(request):
 
     # wechat share
     request.share = {
-        'desc':'查老师，浙江大学非官方匿名教评系统。在这里，一切都是匿名的，您可以畅所欲言。期末选课必备神器！',
-        'title':'查老师',
+        'desc':'在这里，一切都是匿名的，您可以畅所欲言。期末选课必备神器！',
+        'title':'查老师 - 浙江大学非官方匿名教评系统',
     }
     response = render_to_response('home.html',locals())
     return response
@@ -209,7 +209,7 @@ def teacher_detail(request,tid):
             return comments
 
     teacher = Teacher.objects.all().filter(pk=int(tid))
-    if teacher is None:
+    if not teacher:
         return HttpResponseNotFound()
     teacher = teacher[0]
 
@@ -376,6 +376,21 @@ def feedback(request):
         msg.send()
 
         return HttpResponseRedirect('/')
+
+def clear_session(request):
+    request.session.pop('uuid')
+    request.session.pop('openid')
+    return HttpResponse('Done')
+
+@before
+def robot_txt(request):
+    if request.ua_is_spider:
+        return HttpResponse("""
+        User-agent: *
+        Disallow: /static/
+        """)
+    else :
+        return HttpResponse('')
 
 def to_static_img(request, file):
     return HttpResponsePermanentRedirect('/static/img/' + file)

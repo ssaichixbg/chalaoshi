@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = 'f_ra_qu7hb5@0q84n%w()m^$&iej+ccwck=l8esu7z3-8*z3tr'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False #True
+DEBUG = False
 
 ALLOWED_HOSTS = ['chalaoshi.cn', 'www.chalaoshi.cn', 'ecs.chalaoshi.cn','localhost']
 
@@ -61,6 +61,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django-datadog',
     'weilib',
     'main_app',
     'www',
@@ -77,6 +78,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django-datadog.middleware.DatadogMiddleware'
 )
 #X_FRAME_OPTIONS = 'ALLOW-FROM http://www.zjustudy.com.cn'
 ROOT_URLCONF = 'main_app.urls'
@@ -171,6 +173,8 @@ EMAIL_HOST = 'smtp.exmail.qq.com'
 EMAIL_PORT = '25'
 EMAIL_HOST_USER = 'contact@zjustudy.com.cn'
 EMAIL_HOST_PASSWORD = ''
+if 'PRODUCTION' in env:
+    EMAIL_HOST_PASSWORD = env['email_password_chalaoshi']
 #EMAIL_USE_TLS = True
 
 # Wechat Config
@@ -179,3 +183,12 @@ if 'PRODUCTION' in env:
     WECHAT['APPID'] = env['wechat_chalaoshi_appid']
     WECHAT['SECRET'] = env['wechat_chalaoshi_secret']
     WECHAT['TOKEN'] = env['wechat_chalaoshi_token']
+
+# Datadog Config
+DATADOG_API_KEY = ''
+DATADOG_APP_KEY = ''
+DATADOG_APP_NAME = ''
+if 'PRODUCTION' in env:
+    DATADOG_API_KEY = env['datadog_api_key_chalaoshi'] 
+    DATADOG_APP_KEY = env['datadog_app_key_chalaoshi']
+    DATADOG_APP_NAME = env['datadog_app_name_chalaoshi']

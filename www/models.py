@@ -157,7 +157,7 @@ class Teacher(models.Model):
             teachers += random.sample(teachers_middle,n/3)
             teachers += random.sample(teachers_bottom,n - n/3*2)
 
-            return teachers
+            return sorted(teachers,lambda x,y:-cmp(x.rate, y.rate))
 
     @staticmethod
     def get_low_rate(n):
@@ -182,12 +182,12 @@ class Teacher(models.Model):
 
         key = str('search_teacher_%s'%kw)
 
-        if getCache(key):
-            return getCache(key)
-        else:
-            teachers = list(teachers)
-            setCache(key,teachers,60*60*24)
-            return teachers
+        #if getCache(key):
+        #    return getCache(key)
+        #else:
+        teachers = list(teachers)
+        #    setCache(key,teachers,60*60*24)
+        return teachers
     
     @staticmethod
     def get_teacher_rate_distribution():

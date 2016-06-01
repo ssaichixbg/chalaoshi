@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import django
 
@@ -6,6 +7,14 @@ django.setup()
 
 import www.tasks as tasks
 
-tasks.cal_rate()
-tasks.cal_hot()
-tasks.clear_rank_cache()
+f = open('/var/log/chalaoshi/tasks.log','a')
+try:    
+    f.write('%s: start chalaoshi tasks.\n' % datetime.now())
+    tasks.cal_rate()
+    f.write('%s: cal_rate finished.\n' % datetime.now())
+    tasks.cal_hot()
+    f.write('%s: cal_hot finished.\n' % datetime.now())
+    tasks.clear_rank_cache()
+    f.write('%s: cleared cache\n' % datetime.now())
+finally:
+    f.close()

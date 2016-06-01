@@ -373,10 +373,12 @@ def get_token(appid, appsecret):
     :return: AccessToekn.
     """
     import time
+    cache_key = '%sAccessToeken' % appid
+    cache_time_key = '%sAccessToeken_time' % appid
 
-    last_update = cache.get('AccessToeken_time')
-    if last_update and (time.time() - last_update) < 7000 and cache.get('AccessToeken'):
-        return cache.get('AccessToeken')
+    last_update = cache.get(cache_time_key)
+    if last_update and (time.time() - last_update) < 7000 and cache.get(cache_key):
+        return cache.get(cache_key)
 
     url = """https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%(appid)s&secret=%(appsecret)s""" \
         % {'appid': appid, 'appsecret': appsecret}
@@ -388,8 +390,8 @@ def get_token(appid, appsecret):
     result = re.findall('"access_token":"(.*?)"', result)
     if result:
         # save to cache
-        cache.set('AccessToeken',result[0])
-        cache.set('AccessToeken_time',time.time())
+        cache.set(cache_key,result[0])
+        cache.set(cache_time_key,time.time())
         return result[0]
     return None
 

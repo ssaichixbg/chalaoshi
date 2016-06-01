@@ -35,14 +35,14 @@ def test_ua(request):
 
 def wx_userinfo_callback(request):
     import urllib2
-    import urllib
+    from django.utils.http import urlencode
     def url_add_params(url, **params):  
         import urlparse
         pr = urlparse.urlparse(url)
         query = dict(urlparse.parse_qsl(pr.query))  
-        query.update(params)  
-        prlist = list(pr)  
-        prlist[4] = urllib.urlencode(query)  
+        query.update(params)
+        prlist = list(pr)
+        prlist[4] = urlencode(query)  
         return urlparse.ParseResult(*prlist).geturl()
 
     redirect = request.session.get('redirect','/')
@@ -59,7 +59,14 @@ def wx_userinfo_callback(request):
     response = urllib2.urlopen(url).read()
     dic = json.loads(response)
     
-    openid = dic['openid']
+    error = dic.get('errcode',-1)
+    if not error == -1:
+        raise Exception(dic.get('errmsg',''))
+
+    openid = dic.get('openid','')
+    if not openid:
+        raise Exception('No valid openid from wechat server.')
+
     request.session['openid'] = openid
     request.session['redirect'] = ''
     
