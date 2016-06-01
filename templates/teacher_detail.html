@@ -2,7 +2,11 @@
 <html lang="zh-cn">
 <head>
     {% include 'header.html' %}
-    <title>听{{teacher.name}}老师的课是怎样的一种体验 - 查老师</title>
+    {% if not_empty %}
+        <title>{{teacher.name}}老师 {{ rate }}分 {{ count }}人打分 - 查老师</title>
+    {% else %}
+        <title>{{teacher.name}}老师</title>
+    {% endif %}
 
 <link rel="stylesheet" href="/static/css/base.css"/>
 <link rel="stylesheet" href="/static/css/home.css"/>

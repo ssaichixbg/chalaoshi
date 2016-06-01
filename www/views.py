@@ -236,12 +236,18 @@ def teacher_detail(request,tid):
     college= teacher.college
 
     # wechat share
-    desc = '%d人评价 %s分 有%s%%的人认为老师点名 ' % (count, rate, check_in)
-    if comments:
-        desc += str(comments[0].content)
+    desc = '%s老师尚未收到足够评分,快来评价吧吧!' %teacher.name
+    title = '快来评价%s老师吧! - 查老师' % teacher.name
+
+    if count > MIN_COUNT:
+        desc = '%d人评价 %s分 有%s%%的人认为老师点名 ' % (count, rate, check_in)
+        title = '听%s老师(%s分)的课是怎样的一种体验 - 查老师' % (teacher.name, rate)
+        if comments:
+            desc += str(comments[0].content)
+
     request.share = {
         'desc': desc,
-        'title': '听%s老师(%s分)的课是怎样的一种体验 - 查老师' % (teacher.name, rate)
+        'title': title
     }
 
     response = render_to_response('teacher_detail.html',locals())
