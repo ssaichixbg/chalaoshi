@@ -8,9 +8,10 @@ from django.db.models import Q
 from .cache import *
 
 COMMENT_STATUS = (
-    (0,'未审核'),
-    (1,'已审核'),
+    (0, '未审核'),
+    (1, '已审核'),
     (-1,'删除'),
+    (2, 'reported'),
 )
 
 MIN_RATE_COUNT = 5

@@ -29,6 +29,7 @@ urlpatterns += [
         url(r'^teacher/(?P<tid>\d+)/rate$',teacher_rate, name='teacher_rate'),
 
         url(r'^comment/(?P<cid>\d+)/rate$',comment_rate),
+        url(r'^comment/(?P<cid>\d+)/report', comment_report),
         
         url(r'robot.txt', robot_txt),
         #url(r'sitemap.xml', sitemap),

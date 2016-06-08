@@ -302,7 +302,7 @@ def teacher_rate(request,tid):
         return HttpResponseNotFound()
 
 @before
-def comment_rate(request,cid):
+def comment_rate(request, cid):
     comment = Comment.objects.all().filter(pk=int(cid))
     t = request.GET.get('type', '')
 
@@ -315,7 +315,18 @@ def comment_rate(request,cid):
 
         RateOnComment.add_rate(comment[0],rate_num,uuid)
 
-    return HttpResponse('1')
+        return HttpResponse('1')
+    else:
+        return HttpResponseNotFound()
+
+@before
+def comment_report(request, cid):
+    comment = Comment.objects.all().filter(pk=int(cid))
+    if comment.exists():
+        comment[0].status = 2
+        return HttpResponse('1')
+    else:
+        return HttpResponseNotFound()
 
 # def upload_teachers():
 #     import csv
