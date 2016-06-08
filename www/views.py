@@ -323,7 +323,9 @@ def comment_rate(request, cid):
 def comment_report(request, cid):
     comment = Comment.objects.all().filter(pk=int(cid))
     if comment.exists():
-        comment[0].status = 2
+        comment = comment[0]
+        comment.status = 2
+        comment.save()
         return HttpResponse('1')
     else:
         return HttpResponseNotFound()
