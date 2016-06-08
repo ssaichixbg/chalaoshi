@@ -72,7 +72,7 @@
                     {% endif %}
                 </div>
             </div>
-            <p class="comment-footer">发布于&nbsp;{{ comment.edit_time | date:"Y.m.d" }}</p>
+            <p class="comment-footer">发布于&nbsp;{{ comment.edit_time | date:"Y.m.d" }}&nbsp;&nbsp;<a href="#" onclick="reportComment({{comment.pk}})">举报</a></p>
             <hr>
             {% endfor %}
         {% else %}
@@ -100,6 +100,6 @@
         }
     }
 </script>
-<script src="/static/js/rate.js?v=3"></script>
+<script src="/static/js/rate.js?v=4"></script>
 </body>
 </html>

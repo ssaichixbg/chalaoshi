@@ -138,3 +138,12 @@ function rateComment(a, pk, type) {
         {'type':type}
     );
 }
+
+function reportComment(pk) {
+    result = confirm("如果您觉得这条评论包含不当评论,\n您可以点击确认进行举报:)");
+    if (result) {
+        $.get(
+          '/comment/' + pk + '/report'
+        );
+    }
+}
