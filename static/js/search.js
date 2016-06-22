@@ -1,4 +1,6 @@
 (function(){
+    var searchTimer;
+
     window.searchTeacher = function(keyword) {
         $('#loading').removeClass('hidden');
         $list = $('#result-list');
@@ -30,7 +32,10 @@
         input = $(this).val();
         if (input.length > 0) {
             displayList();
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(function(){
             window.searchTeacher(input);
+            },300);
         }
         else {
             hideList();

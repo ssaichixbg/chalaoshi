@@ -89,11 +89,28 @@ class Teacher(models.Model):
             college = models.Model.__getattribute__(self, 'college')
             setCache(key, college)
             return college
+        
+        def get_gpa():
+            gpa_key = 'teacher_%d_gpa' % self.pk
+            cache_data = getCache(gpa_key)
+            if not cache_data:
+                import urllib
+                import urllib2
+                url = 'http://chalaoshi.sinaapp.com/course/list?'+urllib.urlencode({'teacher':self.name.encode('UTF-8')})
+                data = urllib2.urlopen(url).read()
+                setCache(gpa_key, data, 3600*24)
+                return data
+            else:
+                return cache_data    
 
         if item == 'college':
             return get_college()
+        
+        if item == 'gpa':
+            return get_gpa()
 
         return models.Model.__getattribute__(self, item)
+   
 
     @staticmethod
     def get_hot(n,cid):
