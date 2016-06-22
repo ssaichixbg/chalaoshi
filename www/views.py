@@ -9,6 +9,7 @@ from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 
+from weilib.lib import generate_js_signature
 from .models import *
 
 # minimum count of rate needed for display
@@ -47,14 +48,7 @@ def before(func):
         return
 
     def wx_js_sign(url):
-        data = urllib.urlencode({
-            'url':url,
-        })
-        wx = {}
-        try:
-            wx = json.loads(urllib2.urlopen('http://chalaoshi.cn/wechat/wx_js_sign',data,timeout=1).read())
-        except Exception, e:
-            raise e
+        wx = generate_js_signature(settings.WECHAT['APPID'],settings.WECHAT['SECRET'], url, settings.WECHAT['TOKEN'])
         return wx
 
     def test(request,*args, **kwargs):
@@ -227,8 +221,7 @@ def teacher_detail(request,tid):
         check_in = '%.1f' % check_in#(float(check_in ) / count * 100)
         not_empty = True
 
-    # Get teacher's gpa from zjustudy
-    teacher.gpa = urllib2.urlopen('http://chalaoshi.sinaapp.com/course/list?'+urllib.urlencode({'teacher':teacher.name.encode('UTF-8')})).read()
+    
     # If the user has already rated
     rated = Rate.is_rated(teacher, request.session['uuid'])
     # Add log
