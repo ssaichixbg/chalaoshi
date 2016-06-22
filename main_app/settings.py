@@ -24,7 +24,8 @@ SECRET_KEY = 'f_ra_qu7hb5@0q84n%w()m^$&iej+ccwck=l8esu7z3-8*z3tr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 if 'debug' in env:
-    DEBUG = True
+    if env['debug'] == '1':
+        DEBUG = True
 
 ALLOWED_HOSTS = ['chalaoshi.cn', 'www.chalaoshi.cn', 'ecs.chalaoshi.cn','localhost']
 
