@@ -96,7 +96,7 @@ class Teacher(models.Model):
             if not cache_data:
                 import urllib
                 import urllib2
-                url = 'http://chalaoshi.sinaapp.com/course/list?'+urllib.urlencode({'teacher':self.name.encode('UTF-8')})
+                url = 'http://zjustudy.chalaoshi.cn/course/list?'+urllib.urlencode({'teacher':self.name.encode('UTF-8')})
                 data = urllib2.urlopen(url).read()
                 setCache(gpa_key, data, 3600*24)
                 return data
