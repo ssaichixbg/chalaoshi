@@ -90,7 +90,7 @@ ENV/
 # svn
 .svn
 
-#swap
+# swap
 *.swp
 
 #pycharm
@@ -98,3 +98,6 @@ ENV/
 
 # Mac OS X
 *.DS_Store
+
+# Django local setting
+local_settings.py
