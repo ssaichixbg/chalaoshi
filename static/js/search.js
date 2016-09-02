@@ -54,7 +54,7 @@
     });
 
     // get pre-search
-    if (search_url != "") {
+    if (typeof search_url !=="undefined" && search_url !== "") {
         $list = $('#result-list');
         displayList();
         $('#loading').removeClass('hidden');

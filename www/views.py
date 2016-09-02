@@ -15,6 +15,9 @@ from .models import *
 # minimum count of rate needed for display
 MIN_COUNT = 4
 
+# page size of teacher comments
+TEACHER_COMMENT_LIST_PAGE_SIZE = 10
+
 def before(func):
     def generate_uuid(ip):
         import time
@@ -179,35 +182,14 @@ def search(request):
     return render_to_response('search_list.html',locals())
 
 @before
-def teacher_detail(request,tid):
-    order_by = request.GET.get('order_by','rate')
-
-    def get_comments(teacher):
-        if isinstance(teacher, Teacher):
-            comments = Comment.get_comments(teacher)
-            if not comments:
-                return
-
-            (likes, dislikes) = RateOnComment.get_comment_pks(request.session['uuid'])
-            for comment in comments:
-                comment.rate = RateOnComment.get_rate(comment)
-                if comment.pk in likes:
-                    comment.like = True
-                elif comment.pk in dislikes:
-                    comment.dislike = True
-
-            if order_by == 'rate':
-                comments = sorted(comments, key=lambda comment: -comment.rate)
-            elif order_by == 'time':
-                comments = sorted(comments, key=lambda comment: -int(comment.edit_time.strftime('%Y%m%d%H%M')))
-            return comments
+def teacher_detail(request, tid):
+    order_by = request.GET.get('order_by', 'rate')
 
     teacher = Teacher.objects.all().filter(pk=int(tid))
     if not teacher:
         return HttpResponseNotFound()
     teacher = teacher[0]
 
-    comments = get_comments(teacher)
     (count, rate, check_in) = Rate.get_rate(teacher)
     not_empty = False
     if count <= MIN_COUNT:
@@ -235,6 +217,7 @@ def teacher_detail(request,tid):
     if count > MIN_COUNT:
         desc = u'%d人评价 %s分 有%s%%的人认为老师点名 ' % (count, rate, check_in)
         title = u'听%s老师(%s分)的课是怎样的一种体验 - 查老师' % (teacher.name, rate)
+        comments = Comment.get_comments(teacher)
         if comments:
             desc += comments[0].content
 
@@ -245,6 +228,50 @@ def teacher_detail(request,tid):
 
     response = render_to_response('teacher_detail.html',locals())
     return response
+
+
+@before
+def teacher_comment_list(request, tid):
+    order_by = request.GET.get('order_by','rate')
+
+    def __get_comments(teacher, page_num=0):
+        comments = Comment.get_comments(teacher)
+        (likes, dislikes) = RateOnComment.get_comment_pks(request.session['uuid'])
+        for comment in comments:
+            comment.rate = RateOnComment.get_rate(comment)
+            if comment.pk in likes:
+                comment.like = True
+            elif comment.pk in dislikes:
+                comment.dislike = True
+
+        if comments:
+            if order_by == 'rate':
+                comments = sorted(comments, key=lambda comment: -comment.rate)
+            elif order_by == 'time':
+                comments = sorted(comments, key=lambda comment: -int(comment.edit_time.strftime('%Y%m%d%H%M')))
+            comments = comments[TEACHER_COMMENT_LIST_PAGE_SIZE * page_num:
+                                TEACHER_COMMENT_LIST_PAGE_SIZE * (page_num + 1)]
+        else:
+            return
+
+        return comments
+
+    teacher = Teacher.objects.all().filter(pk=int(tid))
+    if not teacher:
+        return HttpResponseNotFound()
+    teacher = teacher[0]
+
+    page_num = request.GET.get('page', '0')
+    try:
+        page_num = int(page_num)
+    except:
+        return HttpResponseBadRequest()
+
+    comments = __get_comments(teacher, page_num)
+    if not comments:
+        return HttpResponse("")
+    return render_to_response('teacher_comment_list.html', locals())
+
 
 @before
 def teacher_comment(request,tid):

@@ -14,7 +14,6 @@
 </head>
 <body>
 
-{% load nbsp %}
 {% include 'search.html' %}
 
 <div class="main">
@@ -47,34 +46,9 @@
                 <a class="one {% if order_by == "time" %}highlight{% endif %}" href="?order_by=time">最新评论</a>
             </div>
             <hr>
-            {% for comment in comments  %}
-            <div class="row">
-                <div class="left">
-                    <p>
-                        {{ comment.content }}
-                    </p>
-                </div>
-                <div class="right">
-                    {% if request.ua_is_wx %}
-                    {% if comment.like %}
-                    <a class="up iconfont highlight" onclick="rateComment(this,{{comment.pk}},'like')" >&#xe601; </a>
-                    {% else %}
-                    <a class="up iconfont" onclick="rateComment(this,{{comment.pk}},'like')">&#xe601;  </a>
-                    {% endif %}
-                    {% endif %}
-                    <p class="{{comment.pk}}-count">{{ comment.rate | rate_center:"3" }}</p>
-                    {% if request.ua_is_wx %}
-                    {% if comment.dislike %}
-                    <a class="down iconfont highlight" onclick="rateComment(this,{{comment.pk}},'dislike')">&#xe601;</a>
-                    {% else %}
-                    <a class="down iconfont" onclick="rateComment(this,{{comment.pk}},'dislike')">&#xe601;  </a>
-                    {% endif %}
-                    {% endif %}
-                </div>
-            </div>
-            <p class="comment-footer">发布于&nbsp;{{ comment.edit_time | date:"Y.m.d" }}&nbsp;&nbsp;<a href="#" onclick="reportComment({{comment.pk}})">举报</a></p>
-            <hr>
-            {% endfor %}
+            <div id="comment-container"></div>
+            <div class="box-loading" id="comment-loading"></div>
+            <p class="empty hidden">最后一条评论了喔::&gt;_&lt;:: </p>
         {% else %}
             <hr>
             <p class="empty">还没有人点评，快来点击下面的评分吧~</p>
@@ -91,15 +65,31 @@
 </div>
 <a class="share-button iconfont hidden" onclick="share();">&#xe609;</a>
 {% include 'footer.html' %}
-<script type="text/javascript" language="javascript">
-    function iFrameHeight() {
-        var ifm= document.getElementById("course_list");
-        var subWeb = document.frames ? document.frames["course_list"].document : ifm.contentDocument;
-        if(ifm != null && subWeb != null) {
-            ifm.height = subWeb.body.scrollHeight;
+<script src="/static/js/rate.js?v=6"></script>
+{% if comments %}
+<script>
+    (function(){
+        function startLoadingComments() {
+            loadMoreComments({{ teacher.pk }}, "{{ order_by }}",function(appended){
+                    if (appended) {
+                        $('#comment-page.hidden').fadeIn('slow', function () {
+                            $(this).removeClass('hidden')
+                        });
+                    }
+                    else {
+                        $('#comment-loading').remove()
+                        $('.empty.hidden').fadeIn('slow');
+                    }
+                });
         }
-    }
+        $(window).on('scroll', function () {
+            if (isScrolledIntoView($('#comment-loading'))) {
+                startLoadingComments();
+            }
+        });
+        startLoadingComments();
+    })();
 </script>
-<script src="/static/js/rate.js?v=4"></script>
+{% endif %}
 </body>
 </html>

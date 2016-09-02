@@ -1,10 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% load nbsp %}
+{% for comment in comments  %}
+<div class="hidden" id="comment-page">
+    <div class="row">
+        <div class="left">
+            <p>
+                {{ comment.content }}
+            </p>
+        </div>
+        <div class="right">
+            {% if request.ua_is_wx %}
+            {% if comment.like %}
+            <a class="up iconfont highlight" onclick="rateComment(this,{{comment.pk}},'like')" >&#xe601; </a>
+            {% else %}
+            <a class="up iconfont" onclick="rateComment(this,{{comment.pk}},'like')">&#xe601;  </a>
+            {% endif %}
+            {% endif %}
+            <p class="{{comment.pk}}-count">{{ comment.rate | rate_center:"3" }}</p>
+            {% if request.ua_is_wx %}
+            {% if comment.dislike %}
+            <a class="down iconfont highlight" onclick="rateComment(this,{{comment.pk}},'dislike')">&#xe601;</a>
+            {% else %}
+            <a class="down iconfont" onclick="rateComment(this,{{comment.pk}},'dislike')">&#xe601;  </a>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <p class="comment-footer">发布于&nbsp;{{ comment.edit_time | date:"Y.m.d" }}&nbsp;&nbsp;<a href="#" onclick="reportComment({{comment.pk}})">举报</a></p>
+    <hr>
+</div>
+{% endfor %}
