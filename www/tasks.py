@@ -19,6 +19,8 @@ def clear_rank_cache(request=None):
     for key in keys:
         hot_teacher_key = 'hot_teacher_%s' % str(key)
         delCache(hot_teacher_key)
+        low_rate_teacher_key = 'low_rate_teacher_%s' % str(key)
+        delCache(low_rate_teacher_key)
         high_rate_teacher_key = 'high_rate_teacher_%s' % str(key)
         delCache(high_rate_teacher_key)
     if request:

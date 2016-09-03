@@ -147,15 +147,19 @@ class Teacher(models.Model):
             return teachers
 
     @staticmethod
-    def get_high_rate(n,cid):
+    def get_by_rate(n, cid, desc=True):
         import random
-        teachers = Teacher.objects.all()
-        key = 'high_rate_teacher_%s' % str(cid)
-
+        teachers = Teacher.objects.all().filter(rate__gt=0)
+       
+        key =  ('high_rate_teacher_%s' % cid) if desc else  ('low_rate_teacher_%s' % cid)
         cached_teachers = getCache(key)
+        
         if int(cid) >= 0:
             if not cached_teachers:
-                teachers = list(teachers.filter(college=cid).order_by('-rate')[:30])
+                if desc:
+                    teachers = list(teachers.filter(college=cid).order_by('-rate')[:30])
+                else:
+                    teachers = list(teachers.filter(college=cid).order_by('rate')[:30])
                 setCache(key,teachers,3600*4)
             else:
                 teachers = cached_teachers
@@ -163,7 +167,10 @@ class Teacher(models.Model):
 
         else:
             if not cached_teachers:
-                teachers = list(teachers.order_by('-rate')[:30])
+                if desc:
+                    teachers = list(teachers.order_by('-rate')[:30])
+                else:    
+                    teachers = list(teachers.order_by('rate')[:30])
                 setCache(key,teachers,3600*4)
             else:
                 teachers = cached_teachers
@@ -176,20 +183,7 @@ class Teacher(models.Model):
             teachers += random.sample(teachers_middle,n/3)
             teachers += random.sample(teachers_bottom,n - n/3*2)
 
-            return sorted(teachers,lambda x,y:-cmp(x.rate, y.rate))
-
-    @staticmethod
-    def get_low_rate(n, cid):
-        teachers = Teacher.objects.all()
-
-        key = 'low_rate_teacher_%s_%s' % (cid, n)
-        cached_teachers = getCache(key)
-        
-        if not cached_teachers:
-            if cid >= 0:
-                teachers = teachers.filter(college=cid)    
-            teachers = list(teachers.order_by('rate')[:n])
-        return teachers
+            return sorted(teachers,lambda x,y:cmp(x.rate, y.rate) * (-1 if desc else 1))
 
 
     @staticmethod
