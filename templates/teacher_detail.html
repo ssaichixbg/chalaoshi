@@ -77,8 +77,10 @@
                         });
                     }
                     else {
-                        $('#comment-loading').remove()
-                        $('.empty.hidden').fadeIn('slow');
+                        setTimeout(function(){
+                            $('#comment-loading').remove()
+                            $('.empty.hidden').fadeIn('slow');
+                        }, 500);
                     }
                 });
         }

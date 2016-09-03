@@ -92,9 +92,6 @@ class Teacher(models.Model):
             return college
         
         def get_gpa():
-            if settings.DEBUG:
-                return '<div>debug mode</div>'
-
             gpa_key = 'teacher_%d_gpa' % self.pk
             cache_data = getCache(gpa_key)
             if not cache_data:
