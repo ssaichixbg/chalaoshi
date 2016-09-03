@@ -4,6 +4,7 @@ import json
 
 from django.db import models
 from django.db.models import Q
+from django.conf import settings
 
 from .cache import *
 
@@ -91,6 +92,9 @@ class Teacher(models.Model):
             return college
         
         def get_gpa():
+            if settings.DEBUG:
+                return '<div>debug mode</div>'
+
             gpa_key = 'teacher_%d_gpa' % self.pk
             cache_data = getCache(gpa_key)
             if not cache_data:
