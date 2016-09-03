@@ -133,6 +133,7 @@ def home(request):
     college_id = get_college_id()
     hot_teachers = Teacher.get_hot(8,college_id)
     high_teachers = Teacher.get_high_rate(8,college_id)
+    low_teachers = Teacher.get_low_rate(8, college_id)
 
     if request.ua_is_spider:
         spider = True

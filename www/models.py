@@ -179,8 +179,16 @@ class Teacher(models.Model):
             return sorted(teachers,lambda x,y:-cmp(x.rate, y.rate))
 
     @staticmethod
-    def get_low_rate(n):
-        teachers = Teacher.objects.all().order_by('rate')[:n]
+    def get_low_rate(n, cid):
+        teachers = Teacher.objects.all()
+
+        key = 'low_rate_teacher_%s_%s' % (cid, n)
+        cached_teachers = getCache(key)
+        
+        if not cached_teachers:
+            if cid >= 0:
+                teachers = teachers.filter(college=cid)    
+            teachers = list(teachers.order_by('rate')[:n])
         return teachers
 
 

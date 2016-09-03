@@ -48,6 +48,14 @@
                 {% endfor %}
                 </ul>
             </div>
+            <div class="hot">
+                <p class="hot-teacher"><i class="iconfont">&#xe606;</i>&nbsp;盲陆聨氓聢聠忙娄聹</p>
+                <ul class="hot-list">
+                {% for teacher in low_teachers %}
+                    <li class="hot-item"><a class="left" href="/teacher/{{teacher.pk}}/">{{ teacher.name | truncatewords:"6"}}</a><p class="right">{{ teacher.rate|floatformat:"2" }}</p></li>
+                {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
     {% endif %}
