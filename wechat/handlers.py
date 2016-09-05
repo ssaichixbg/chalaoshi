@@ -20,14 +20,19 @@ HOST = settings.HOST_NAME
 
 def search_handler(recv_msg):
     def search_teacher():
+        def readable_result(item):
+            if isinstance(item, Teacher):
+                return '%8s评分:%.1f' % (t.name.decode('utf-8'), t.rate)
+
+            return str(item)
+
         recv_content = recv_msg.content
         teachers = Teacher.search(recv_content)
-        items = [PTItem(t.name,t.name,'', HOST + '/teacher/%d/' % t.pk) for t in teachers]
+        items = [PTItem(readable_result(t), readable_result(t), '', HOST + '/teacher/%d/' % t.pk) for t in teachers]
         return items
 
     def search_course():
         pass
-
 
     result = search_teacher()
 

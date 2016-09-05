@@ -198,10 +198,12 @@ class Teacher(models.Model):
             teachers = Teacher.objects.all().filter(q)
             teachers = teachers.order_by('-hot')[:40]
         else:
+            if not isinstance(kw, unicode):
+                kw = kw.decode('utf-8')
             teachers = Teacher.objects.all().filter(Q(name__contains=kw) | Q(pinyin__startswith=kw))
             teachers = teachers.order_by('-hot')[:20]
 
-        key = str('search_teacher_%s'%kw)
+        key = 'search_teacher_%s' % (kw.encode('utf-8') if isinstance(kw, unicode) else kw)
 
         #if getCache(key):
         #    return getCache(key)
