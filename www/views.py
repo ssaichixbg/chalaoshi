@@ -104,7 +104,7 @@ def before(func):
         response = None
         if 'openid' not in request.session and request.ua_is_wx:
             from urllib import quote
-            callback_url = quote('http://chalaoshi.cn/wechat/wx_userinfo_callback')
+            callback_url = quote(settings.HOST_NAME+'/wechat/wx_userinfo_callback')
             request.session['redirect'] = 'http://'+request.get_host()+request.get_full_path()
             response = HttpResponseRedirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_base&state=%s#wechat_redirect' % (settings.WECHAT['APPID'], callback_url, settings.WECHAT['TOKEN']))
         else:
