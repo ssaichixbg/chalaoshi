@@ -24,8 +24,8 @@ def search_handler(recv_msg):
     def search_teacher():
         recv_content = recv_msg.content
         teachers = Teacher.search(recv_content)
-        items = [PTItem('{t.name:<8}评分:{t.rate:.2f}'.format(t=t),
-                        '{t.name:<8}评分:{t.rate:.2f}'.format(t=t),
+        items = [PTItem(u'{t.name}\t\t评分:{t.rate:.2f}'.format(t=t),
+                        u'{t.name}\t\t评分:{t.rate:.2f}'.format(t=t),
                         '',
                         HOST + '/teacher/%d/' % t.pk)
                  for t in teachers]
@@ -43,19 +43,19 @@ def search_handler(recv_msg):
 
         items = []
         for course in courses:
-            name = '{course.name}{course.kcdm}'.format(course=course)
+            name = u'{course[name]}\t{course[kcdm]}'.format(course=course)
             teachers = course['teachers']
-            url = 'http://chalaoshi.cn/?'
+            url = HOST + '?'
             for teacher in teachers[:30]:
-                url += 'q=%s&' % teacher['name']
+                url += u'q=%s&' % teacher['name']
             item = PTItem(name, name, '', url)
             items.append(item)
         return items
 
     result = search_teacher()
 
-    # if not result:
-    #     result = search_course()
+    if not result:
+        result = search_course()
 
     if not result:
         return
