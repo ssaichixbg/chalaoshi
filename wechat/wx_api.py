@@ -5,15 +5,13 @@ import urllib
 from django.http import *
 from django.shortcuts import  render_to_response
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 
 import weilib.lib
 from weilib.lib import generate_js_signature,get_qrcode
 
-try:
-    from main_app.localsettings import TOKEN,APP_ID,APP_SEC
-except ImportError:
-    from main_app.settings import TOKEN,APP_ID,APP_SEC
-
+APP_ID = settings.WECHAT['APPID']
+APP_SEC = settings.WECHAT['SECRET']
 
 @csrf_exempt
 def wx_js_sign(request):
