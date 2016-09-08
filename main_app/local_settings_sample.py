@@ -103,6 +103,8 @@ WECHAT = {
     'TOKEN': '',
 }
 
+CACHE_DOMAIN = '' 
+HOST_NAME = ''
 # Datadog Config
 DATADOG_API_KEY = ''
 DATADOG_APP_KEY = ''
