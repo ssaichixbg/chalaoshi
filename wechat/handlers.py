@@ -58,7 +58,7 @@ def search_handler(recv_msg):
         result = search_course()
 
     if not result:
-        return
+        return robot_handler(recv_msg)
 
     headerItem = PTItem('查询结果（最多显示10个结果）', '', '', HOST + '/')
     result.insert(0, headerItem)
@@ -69,7 +69,7 @@ def robot_handler(recv_msg, *args, **kwargs):
     recv_content = recv_msg.content
     reply = robot.get_reply(recv_content,recv_msg.from_user_name)
     if len(reply) > 0:
-        return text_response(recv_msg, reply)
+        return text_response(recv_msg, reply.encode('utf-8'))
     else:
         return text_response(recv_msg, """
 您的留言我们已经收到:)
