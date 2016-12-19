@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'raven.contrib.django.raven_compat',
     'django-datadog',
     'weilib',
     'main_app',
@@ -50,7 +51,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
     'django-datadog.middleware.DatadogMiddleware',
 )
 #X_FRAME_OPTIONS = 'ALLOW-FROM http://www.zjustudy.com.cn'
@@ -153,11 +153,3 @@ HOST_NAME = 'http://chalaoshi.cn'
 
 CACHE_DOMAIN = 'cls_proc'
 from local_settings import *
-
-ROLLBAR = {
-    'access_token': '598746bacedc45dbac9b45322e108fcb',
-    'environment': 'development' if DEBUG else 'production',
-    'root': BASE_DIR,
-}
-import rollbar
-rollbar.init(**ROLLBAR)
