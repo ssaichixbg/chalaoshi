@@ -11,7 +11,8 @@ def get_reply(content,openId=''):
         # }
         # response = urllib2.urlopen('http://www.xiaohuangji.com/ajax.php', data=urllib.urlencode(params))
         params = {
-            'key': 'e49b7f8beae66073faed68da3fc12a4e',
+          #  'key': 'e49b7f8beae66073faed68da3fc12a4e',
+          'key': 'bdb819c3dda046c4a71aaf1e7dadee95',
             'info': content,
             'userid':openId,
 
@@ -23,4 +24,4 @@ def get_reply(content,openId=''):
         return ""
 
 if __name__ == '__main__':
-    print get_reply('hi')
+    print get_reply('hi').encode('utf-8')
