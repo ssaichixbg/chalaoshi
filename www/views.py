@@ -57,7 +57,7 @@ def before(func):
     def test(request,*args, **kwargs):
         # redirect
         if request.get_host() == 'www.chalaoshi.cn':
-            return HttpResponsePermanentRedirect('http://chalaoshi.cn'+request.get_full_path())
+            return HttpResponsePermanentRedirect('https://chalaoshi.cn'+request.get_full_path())
 
         test_ua(request)
         if request.ua_is_pc:
@@ -98,14 +98,14 @@ def before(func):
             log.save()
 
         # add wx js signature
-        request.wx = wx_js_sign('http://'+request.get_host()+request.get_full_path())
+        request.wx = wx_js_sign('https://'+request.get_host()+request.get_full_path())
         
         # redirect to OpenID url
         response = None
         if 'openid' not in request.session and request.ua_is_wx:
             from urllib import quote
             callback_url = quote(settings.HOST_NAME+'/wechat/wx_userinfo_callback')
-            request.session['redirect'] = 'http://'+request.get_host()+request.get_full_path()
+            request.session['redirect'] = 'https://'+request.get_host()+request.get_full_path()
             response = HttpResponseRedirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_base&state=%s#wechat_redirect' % (settings.WECHAT['APPID'], callback_url, settings.WECHAT['TOKEN']))
         else:
             if request.ua_is_wx:
@@ -178,8 +178,8 @@ def search(request):
             teacher.rate = 'N/A'
 
     # add log if not empty
-    if len(teachers) > 0 and keyword is not None:
-        LogOnSearch.add_log(keyword,request.session['uuid'])
+    #if len(teachers) > 0 and keyword is not None:
+    #    LogOnSearch.add_log(keyword,request.session['uuid'])
     return render_to_response('search_list.html',locals())
 
 @before
