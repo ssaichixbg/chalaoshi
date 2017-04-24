@@ -149,7 +149,7 @@ DATADOG_APP_KEY = ''
 DATADOG_APP_NAME = ''
 
 # server host name
-HOST_NAME = 'http://chalaoshi.cn'
+HOST_NAME = 'https://chalaoshi.cn'
 
 CACHE_DOMAIN = 'cls_proc'
 from local_settings import *
