@@ -62,7 +62,7 @@ def cal_hot(request=None):
         teacher.hot = hot
         teacher.save()
         results.append((teacher.name, hot,detail,comment))
-        time.sleep(0.1)
+        time.sleep(0.2)
 
     if request is None:
         return
@@ -113,7 +113,7 @@ def cal_rate(request=None):
             teacher.rate = 0
 
         teacher.save()
-        time.sleep(0.1)
+        time.sleep(0.2)
 
     html += '<h5>%.2f</h5>' % teacher_ave
     results.sort(key=lambda result: -result[1])
