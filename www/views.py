@@ -73,14 +73,14 @@ def before(func):
         
         if not 'uuid' in request.session:
              uuid = generate_uuid(ip)
-             request.session['uuid'] = uuid
         else:
             uuid = request.session['uuid']
             try:
                 uuid = int(uuid)
             except:
                 uuid = generate_uuid(ip)
-        
+        request.session['uuid'] = uuid
+
         # check new openid
         redirect = request.GET.get('redirect','')
         if redirect == 'openid_callback':
@@ -102,18 +102,18 @@ def before(func):
         
         # redirect to OpenID url
         response = None
-        if 'openid' not in request.session and request.ua_is_wx:
-            from urllib import quote
-            callback_url = quote(settings.HOST_NAME+'/wechat/wx_userinfo_callback')
-            request.session['redirect'] = 'https://'+request.get_host()+request.get_full_path()
-            response = HttpResponseRedirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_base&state=%s#wechat_redirect' % (settings.WECHAT['APPID'], callback_url, settings.WECHAT['TOKEN']))
-        else:
-            if request.ua_is_wx:
-                oid = OpenID.get_or_create(request.session['openid'], uuid)
-                request.session['uuid'] = oid.uuid
+        #if 'openid' not in request.session and request.ua_is_wx:
+        #    from urllib import quote
+        #    callback_url = quote(settings.HOST_NAME+'/wechat/wx_userinfo_callback')
+        #    request.session['redirect'] = 'https://'+request.get_host()+request.get_full_path()
+        #    response = HttpResponseRedirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_base&state=%s#wechat_redirect' % (settings.WECHAT['APPID'], callback_url, settings.WECHAT['TOKEN']))
+        #else:
+        #    if request.ua_is_wx:
+        #        oid = OpenID.get_or_create(request.session['openid'], uuid)
+        #        request.session['uuid'] = oid.uuid
 
-            response = func(request,*args, **kwargs)
-            response.set_cookie('uuid','',expires=-1)
+        response = func(request,*args, **kwargs)
+        response.set_cookie('uuid','',expires=-1)
         
         return response
     return test
