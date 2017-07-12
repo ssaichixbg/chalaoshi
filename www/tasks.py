@@ -77,13 +77,30 @@ def cal_hot(request=None):
 ##
 # offline calculation for rate of teachers
 #
-def cal_rate(request=None):
+def cal_rate(request=None, debug=False):
+    def average_rate(rate_list):
+        count = len(rate_list)
+        eff = max(1, int(count * 0.2))
+        rate_list.sort(key=lambda x: x[0])
+        rate_list = rate_list[eff:]
+        rate_list = rate_list[:len(rate_list)-eff]
+        ave_rate = sum([r[0] * r[1] for r in rate_list]) * 1.0 / sum([r[1] for r in rate_list])
+        return ave_rate
+
     def devide_rate(rates):
         teacher_rates = {}
         for rate in rates:
             pk = rate.teacher_id
+            comment = Comment.objects.all().filter(teacher=rate.teacher, uuid=rate.uuid)
+            other_comments = Comment.objects.all().filter(uuid=rate.uuid)
+            # weight more if a user has both comment and rate
+            weight = 0.1
+            if comment and len(comment[0].content) >= 6:
+                weight += 0.35
+            if len(other_comments) > 1:
+                weight += 0.25
             teacher_rates.setdefault(pk,[])
-            teacher_rates[pk].append(rate.rate)
+            teacher_rates[pk].append((rate.rate, weight))
         return teacher_rates
 
     html = '<table>'
@@ -99,25 +116,26 @@ def cal_rate(request=None):
     for teacher in teachers:
         rate_list = copy.copy(teacher_rates.get(teacher.pk,[]))
         count = len(rate_list)
-        eff = max(1,int(count*0.2))
-
+        
+        print teacher.id, '\t', teacher.name
         if count >=5:
-            rate_list = rate_list[eff:]
-            rate_list = rate_list[:len(rate_list)-eff]
-            ave_rate = sum(rate_list) * 1.0 / len(rate_list)
-            rate = 1.0 * count / ( 2 + count) * ave_rate + \
-                           2.0 / (2 + count) * teacher_ave
+            ave_rate = average_rate(rate_list)
+            rate = 1.0 * count / ( 5 + count) * ave_rate + \
+                           5.0 / (5 + count) * teacher_ave
+            results.append((teacher.name, teacher.rate, rate, count,teacher_rates.get(teacher.pk,[]) ))
             teacher.rate = rate
-            results.append((teacher.name, ave_rate, rate, count,teacher_rates.get(teacher.pk,[]) ))
         else:
             teacher.rate = 0
-
-        teacher.save()
+        
+        if not debug:
+            teacher.save()
         time.sleep(0.2)
 
     html += '<h5>%.2f</h5>' % teacher_ave
+    print 'AVERAGE RATING: %.2f' % teacher_ave
     results.sort(key=lambda result: -result[1])
     for result in results:
+#       print '%s\t%.1f\t%.1f\t%d\t%s' % (result[0], result[1],result[2], result[3], str(result[4]))
         html += '<tr><td>%s</td><td>%.1f</td><td>%.1f</td><td>%d</td>i<td>%s</td></tr>' % (result[0], result[1],result[2], result[3], str(result[4]))
 
     html += '</table>'
