@@ -77,8 +77,13 @@ class Teacher(models.Model):
         from tools import convert2PY
         if not self.pinyin or len(self.pinyin) == 0:
             self.pinyin = convert2PY(self.name)
+        # delete cache
         rate_distribution_key = 'rate_distribution'
         delCache(rate_distribution_key)
+        
+        teacher_rate_key = 'rate_%s' % self.id
+        delCache(teacher_rate_key)
+
         super(Teacher, self).save(*args, **kwargs)
 
     def __getattribute__(self, item):
