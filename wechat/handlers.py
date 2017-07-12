@@ -60,10 +60,10 @@ def search_handler(recv_msg):
     if not result:
         return robot_handler(recv_msg)
 
-    headerItem = PTItem('查询结果（最多显示10个结果）', '', '', HOST + '/')
+    headerItem = PTItem('查询结果（最多显示6个结果）', '', '', HOST + '/')
     result.insert(0, headerItem)
 
-    return pic_text_response(recv_msg,result[:10])
+    return pic_text_response(recv_msg,result[:6])
 
 def robot_handler(recv_msg, *args, **kwargs):
     recv_content = recv_msg.content
