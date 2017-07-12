@@ -16,6 +16,7 @@ router_patterns = [
     #('image', re.compile('^.*$'), image_handler),
     #('text', re.compile('^红包$'), hongbao_handler),
     #('text', re.compile('^成绩统计$'), gpa_cal_test_handler),
+    ('text', re.compile('^.+$'), search_handler),
     ('text', re.compile('^.+$'), robot_handler),
     #('event-CLICK', re.compile('^GPA_BRIEF$'), gpa_brief_handler),
 ]

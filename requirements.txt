@@ -1,0 +1,7 @@
+MySQL-python==1.2.5
+pylibmc==1.5.1
+Django==1.9
+django-datadog==1.0.1
+django-debug-toolbar==1.4
+memcache-toolbar==0.5.6
+datadog==0.12.0

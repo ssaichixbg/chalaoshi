@@ -21,8 +21,8 @@ routers = [db_router, base_router]
 
 
 def update_menu_to_wechat(request):
-    rep = post_menu(settings.WECHAT['APPID'], settings.WECHAT['SECRET'])
-    return render_to_response('send/menu_create.json', {'menu_list': create_btns()})
+    rep = post_menu(settings.WECHAT['APPID'], settings.WECHAT['SECRET'], settings.HOST_NAME)
+    return render_to_response('send/menu_create.json', {'menu_list': create_btns(settings.HOST_NAME)})
 
 
 def test_ua(request):
@@ -32,6 +32,7 @@ def test_ua(request):
     ua = request.META.get('HTTP_USER_AGENT',None)
     #if not (wx_ua in ua or wp in ua or dnspod in ua):
     #    return HttpResponsePermanentRedirect('http://weixin.qq.com')
+
 
 def wx_userinfo_callback(request):
     import urllib2
@@ -74,6 +75,8 @@ def wx_userinfo_callback(request):
     response = HttpResponseRedirect(redirect)
 
     return response
+
+
 @csrf_exempt
 def wx_js_sign(request):
     url = request.POST.get('url','')

@@ -152,3 +152,49 @@ function reportComment(pk) {
         );
     }
 }
+
+var commentPage = 0;
+var commentsIsLoading = false;
+function loadMoreComments(tid, order_by, callback) {
+    if (commentsIsLoading) return;
+    
+    commentsIsLoading = true;
+    
+    $.get(
+        '/teacher/' + tid + '/comment_list',
+        {
+            'page': commentPage++,
+            'order_by':order_by
+        },
+        function (data, status) {
+            if (!data.length) {
+                if (typeof callback !== "undefined") {
+                    callback(false);
+                }
+                return;
+            }
+            
+            var container = $('#comment-container');
+            container.html(container.html() + data);
+            commentsIsLoading = false;
+            
+            if (typeof callback !== "undefined") {
+                callback(true);
+            }
+        }
+    )
+}
+
+
+function isScrolledIntoView(elem)
+{
+    if (!elem.length) return false;
+    
+    var docViewTop = $(window).scrollTop();
+    var docViewBottom = docViewTop + $(window).height();
+
+    var elemTop = $(elem).offset().top;
+    var elemBottom = elemTop + $(elem).height();
+
+    return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+}

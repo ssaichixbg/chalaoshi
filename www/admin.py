@@ -27,7 +27,7 @@ class TeacherAdmin(admin.ModelAdmin):
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('create_time', 'teacher','content','status',)
-    search_fields = ('teacher',)
+    search_fields = ('teacher__name',)
     actions = ('change_status_del','change_status_viewed',)
    # admin.site.disable_action('delete_selected',)
 

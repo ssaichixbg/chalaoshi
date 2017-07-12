@@ -140,7 +140,7 @@ class GetMsg(object):
         elif msgtype == 'event':
             self.get_event_msg(msg)
 
-        log.save()
+        #log.save()
 
 
 class WeiSession(object):

@@ -25,6 +25,7 @@ urlpatterns += [
         url(r'^feedback$',feedback),
 
         url(r'^teacher/(?P<tid>\d+)/$',teacher_detail, name='teacher_detail'),
+        url(r'^teacher/(?P<tid>\d+)/comment_list$', teacher_comment_list, name='teacher_comment_list'),
         url(r'^teacher/(?P<tid>\d+)/comment$',teacher_comment, name='teacher_comment'),
         url(r'^teacher/(?P<tid>\d+)/rate$',teacher_rate, name='teacher_rate'),
 

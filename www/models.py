@@ -4,6 +4,7 @@ import json
 
 from django.db import models
 from django.db.models import Q
+from django.conf import settings
 
 from .cache import *
 
@@ -76,8 +77,13 @@ class Teacher(models.Model):
         from tools import convert2PY
         if not self.pinyin or len(self.pinyin) == 0:
             self.pinyin = convert2PY(self.name)
+        # delete cache
         rate_distribution_key = 'rate_distribution'
         delCache(rate_distribution_key)
+        
+        teacher_rate_key = 'rate_%s' % self.id
+        delCache(teacher_rate_key)
+
         super(Teacher, self).save(*args, **kwargs)
 
     def __getattribute__(self, item):
@@ -96,7 +102,7 @@ class Teacher(models.Model):
             if not cache_data:
                 import urllib
                 import urllib2
-                url = 'http://chalaoshi.sinaapp.com/course/list?'+urllib.urlencode({'teacher':self.name.encode('UTF-8')})
+                url = 'http://zjustudy.chalaoshi.cn/course/list?'+urllib.urlencode({'teacher':self.name.encode('UTF-8')})
                 data = urllib2.urlopen(url).read()
                 setCache(gpa_key, data, 3600*24)
                 return data
@@ -146,15 +152,19 @@ class Teacher(models.Model):
             return teachers
 
     @staticmethod
-    def get_high_rate(n,cid):
+    def get_by_rate(n, cid, desc=True):
         import random
-        teachers = Teacher.objects.all()
-        key = 'high_rate_teacher_%s' % str(cid)
-
+        teachers = Teacher.objects.all().filter(rate__gt=0)
+       
+        key =  ('high_rate_teacher_%s' % cid) if desc else  ('low_rate_teacher_%s' % cid)
         cached_teachers = getCache(key)
+        
         if int(cid) >= 0:
             if not cached_teachers:
-                teachers = list(teachers.filter(college=cid).order_by('-rate')[:30])
+                if desc:
+                    teachers = list(teachers.filter(college=cid).order_by('-rate')[:30])
+                else:
+                    teachers = list(teachers.filter(college=cid).order_by('rate')[:30])
                 setCache(key,teachers,3600*4)
             else:
                 teachers = cached_teachers
@@ -162,7 +172,10 @@ class Teacher(models.Model):
 
         else:
             if not cached_teachers:
-                teachers = list(teachers.order_by('-rate')[:30])
+                if desc:
+                    teachers = list(teachers.order_by('-rate')[:30])
+                else:    
+                    teachers = list(teachers.order_by('rate')[:30])
                 setCache(key,teachers,3600*4)
             else:
                 teachers = cached_teachers
@@ -175,12 +188,7 @@ class Teacher(models.Model):
             teachers += random.sample(teachers_middle,n/3)
             teachers += random.sample(teachers_bottom,n - n/3*2)
 
-            return sorted(teachers,lambda x,y:-cmp(x.rate, y.rate))
-
-    @staticmethod
-    def get_low_rate(n):
-        teachers = Teacher.objects.all().order_by('rate')[:n]
-        return teachers
+            return sorted(teachers,lambda x,y:cmp(x.rate, y.rate) * (-1 if desc else 1))
 
 
     @staticmethod
@@ -195,10 +203,12 @@ class Teacher(models.Model):
             teachers = Teacher.objects.all().filter(q)
             teachers = teachers.order_by('-hot')[:40]
         else:
+            if not isinstance(kw, unicode):
+                kw = kw.decode('utf-8')
             teachers = Teacher.objects.all().filter(Q(name__contains=kw) | Q(pinyin__startswith=kw))
             teachers = teachers.order_by('-hot')[:20]
 
-        key = str('search_teacher_%s'%kw)
+        key = 'search_teacher_%s' % (kw.encode('utf-8') if isinstance(kw, unicode) else kw)
 
         #if getCache(key):
         #    return getCache(key)

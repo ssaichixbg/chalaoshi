@@ -27,12 +27,12 @@
     </div>
     {% if spider %}
         {% for teacher in hot_teachers %}
-   			<a href="http://chalaoshi.cn/teacher/{{teacher.pk}}/">{{ teacher.name }}</a>
+   			<a href="https://chalaoshi.cn/teacher/{{teacher.pk}}/">{{ teacher.name }}</a>
         {% endfor %}
     {% else %}
     <div id='slider' class='swipe'>
         <div class='swipe-wrap'>
-            <div class="hot">
+            <div class="hot" id="hotrank">
                 <p class="hot-teacher">热门老师</p>
                 <ul class="hot-list">
                 {% for teacher in hot_teachers %}
@@ -40,10 +40,18 @@
                 {% endfor %}
                 </ul>
             </div>
-            <div class="hot">
+            <div class="hot" id="highrank">
                 <p class="hot-teacher"><i class="iconfont">&#xe606;</i>&nbsp;高分榜</p>
                 <ul class="hot-list">
                 {% for teacher in high_teachers %}
+                    <li class="hot-item"><a class="left" href="/teacher/{{teacher.pk}}/">{{ teacher.name | truncatewords:"6"}}</a><p class="right">{{ teacher.rate|floatformat:"2" }}</p></li>
+                {% endfor %}
+                </ul>
+            </div>
+            <div class="hot" id="lowrank">
+                <p class="hot-teacher"><i class="iconfont">&#xe606;</i>&nbsp;低分榜</p>
+                <ul class="hot-list">
+                {% for teacher in low_teachers %}
                     <li class="hot-item"><a class="left" href="/teacher/{{teacher.pk}}/">{{ teacher.name | truncatewords:"6"}}</a><p class="right">{{ teacher.rate|floatformat:"2" }}</p></li>
                 {% endfor %}
                 </ul>
@@ -71,7 +79,7 @@
 </script>
 
 {% include 'footer.html' %}
-<script src="/static/js/swipe.js"></script>
+<script src="/static/js/swipe.js?v=0902"></script>
 <script src="/static/js/home.js?v=1"></script>
 </body>
 </html>
