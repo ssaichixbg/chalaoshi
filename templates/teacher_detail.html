@@ -10,7 +10,11 @@
 
 <link rel="stylesheet" href="/static/css/base.css"/>
 <link rel="stylesheet" href="/static/css/home.css"/>
-
+<style>
+    .fa-star,.fa-star-half-o,.fa-star-o{
+        color: #ffb635;
+    }
+</style>
 </head>
 <body>
 
@@ -73,12 +77,12 @@
             loadMoreComments({{ teacher.pk }}, "{{ order_by }}",function(appended){
                     if (appended) {
                         $('#comment-page.hidden').fadeIn('slow', function () {
-                            $(this).removeClass('hidden')
+                            $(this).removeClass('hidden');
                         });
                     }
                     else {
                         setTimeout(function(){
-                            $('#comment-loading').remove()
+                            $('#comment-loading').remove();
                             $('.empty.hidden').fadeIn('slow');
                         }, 500);
                     }
