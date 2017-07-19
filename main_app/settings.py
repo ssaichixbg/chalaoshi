@@ -24,7 +24,7 @@ SECRET_KEY = 'f_ra_qu7hb5@0q84n%w()m^$&iej+ccwck=l8esu7z3-8*z3tr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['chalaoshi.cn', 'www.chalaoshi.cn', 'ecs.chalaoshi.cn','localhost']
+ALLOWED_HOSTS = ['chalaoshi.cn', 'www.chalaoshi.cn', 'localhost']
 
 # Application definition
 INTERNAL_IPS = ['101.231.69.134',] 
@@ -71,7 +71,7 @@ DATABASES = {
         'PASSWORD': '',
         'PORT': '',
         'OPTIONS': {
-            'charset':'utf8mb4', #add emoji support
+            'charset':'utf8mb4',  # add emoji support
         }
     }
 }
@@ -80,7 +80,7 @@ DATABASES = {
 CACHES = {
     'default': {
             'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
-           'LOCATION': '127.0.0.1:11211',
+            'LOCATION': '127.0.0.1:11211',
     }
 }
 
@@ -116,7 +116,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'debug': DEBUG,
-            'context_processors':[
+            'context_processors': [
                 'django.contrib.auth.context_processors.auth',
             ],
         },
@@ -151,82 +151,7 @@ DATADOG_APP_NAME = ''
 
 # Logging
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': True,
-    'formatters': {
-        'standard': {
-            'format': '%(asctime)s [%(threadName)s:%(thread)d] [%(name)s:%(lineno)d] [%(levelname)s]- %(message)s'
-        },
-    },
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse',
-        },
-        'require_debug_true': {
-            '()': 'django.utils.log.RequireDebugTrue',
-        }
-    },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
-            'include_html': True,
-        },
-        'default': {
-            'level':'DEBUG',
-            'class':'logging.handlers.RotatingFileHandler',
-            'filename': '/var/log/chalaoshi/debug/django.log',
-            'maxBytes': 1024*1024*5, # 5 MB
-            'backupCount': 5,
-            'formatter':'standard',
-        },
-        'console':{
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'standard'
-        },
-        'request_handler': {
-            'level':'DEBUG',
-            'class':'logging.handlers.RotatingFileHandler',
-            'filename': '/var/log/chalaoshi/debug/django_request.log',
-            'maxBytes': 1024*1024*5, # 5 MB
-            'backupCount': 5,
-            'formatter':'standard',
-        },
-        'scprits_handler': {
-            'level':'DEBUG',
-            'class':'logging.handlers.RotatingFileHandler',
-            'filename': '/var/log/chalaoshi/debug/script.log',
-            'maxBytes': 1024*1024*5, # 5 MB
-            'backupCount': 5,
-            'formatter':'standard',
-        },
-        'error_handler': {
-            'level':'ERROR',
-            'class':'logging.handlers.RotatingFileHandler',
-            'filename': '/var/log/chalaoshi/django_error.log',
-            'maxBytes': 1024*1024*5, # 5 MB
-            'backupCount': 5,
-            'formatter':'standard',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['default','console','error_handler',],
-            'level': 'DEBUG',
-            'propagate': False
-        },
-        # 'django.request': {
-        #     'handlers': ['request_handler'],
-        #     'level': 'DEBUG',
-        #     'propagate': False
-        # },
-        # 'scripts': { # 脚本专用日志
-        #     'handlers': ['scprits_handler'],
-        #     'level': 'INFO',
-        #     'propagate': False
-        # },
-    }
+
 }
 
 # server host name
