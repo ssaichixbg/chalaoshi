@@ -252,6 +252,10 @@ def teacher_comment_list(request, tid):
                 comments = sorted(comments, key=lambda comment: -int(comment.edit_time.strftime('%Y%m%d%H%M')))
             comments = comments[TEACHER_COMMENT_LIST_PAGE_SIZE * page_num:
                                 TEACHER_COMMENT_LIST_PAGE_SIZE * (page_num + 1)]
+            for comment in comments:
+                associatedRates = Rate.objects.filter(uuid=comment.uuid, teacher=comment.teacher)
+                if len(associatedRates)>0:
+                    comment.associatedRate = associatedRates[0]
         else:
             return
 

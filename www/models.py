@@ -141,13 +141,14 @@ class Teacher(models.Model):
             else:
                 teachers = cached_teachers
 
-            teachers_top = teachers[0:5]
-            teachers_middle = teachers[5:15]
-            teachers_bottom = teachers[15:30]
+            if len(teachers)>30:
+                teachers_top = teachers[0:5]
+                teachers_middle = teachers[5:15]
+                teachers_bottom = teachers[15:30]
 
-            teachers = random.sample(teachers_top,n/3)
-            teachers += random.sample(teachers_middle,n/3)
-            teachers += random.sample(teachers_bottom,n - n/3*2)
+                teachers = random.sample(teachers_top, n / 3)
+                teachers += random.sample(teachers_middle, n / 3)
+                teachers += random.sample(teachers_bottom, n - n / 3 * 2)
 
             return teachers
 
@@ -180,13 +181,14 @@ class Teacher(models.Model):
             else:
                 teachers = cached_teachers
 
-            teachers_top = teachers[0:5]
-            teachers_middle = teachers[5:15]
-            teachers_bottom = teachers[15:30]
+            if len(teachers) > 30:
+                teachers_top = teachers[0:5]
+                teachers_middle = teachers[5:15]
+                teachers_bottom = teachers[15:30]
 
-            teachers = random.sample(teachers_top,n/3)
-            teachers += random.sample(teachers_middle,n/3)
-            teachers += random.sample(teachers_bottom,n - n/3*2)
+                teachers = random.sample(teachers_top,n/3)
+                teachers += random.sample(teachers_middle,n/3)
+                teachers += random.sample(teachers_bottom,n - n/3*2)
 
             return sorted(teachers,lambda x,y:cmp(x.rate, y.rate) * (-1 if desc else 1))
 
