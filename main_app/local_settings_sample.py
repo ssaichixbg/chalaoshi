@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'raven.contrib.django.raven_compat',
     'weilib',
     'main_app',
     'www',
@@ -101,9 +102,23 @@ WECHAT = {
     'APPID':'',
     'SECRET':'',
     'TOKEN': '',
+    'FAKE_OPENID': False,
 }
 
 # Datadog Config
 DATADOG_API_KEY = ''
 DATADOG_APP_KEY = ''
 DATADOG_APP_NAME = ''
+
+CACHE_DOMAIN = 'cls'
+
+HOST_NAME = 'https://chalaoshi.cn'
+
+import raven
+
+RAVEN_CONFIG = {
+    'dsn': '',
+    # If you are using git, you can also automatically configure the
+    # release based on the git info.
+    'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
+}

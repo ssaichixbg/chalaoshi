@@ -34,6 +34,11 @@ def test_ua(request):
     #    return HttpResponsePermanentRedirect('http://weixin.qq.com')
 
 
+def wx_userinfo_mock_callback(request):
+    code = request.POST.get('code', '')
+    if requet.method == 'GET' or not code:
+        return render_to_response('')
+
 def wx_userinfo_callback(request):
     import urllib2
     from django.utils.http import urlencode

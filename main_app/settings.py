@@ -141,6 +141,7 @@ WECHAT = {
     'APPID':'',
     'SECRET':'',
     'TOKEN': '',
+    'FAKE_OPENID' : False, # return a fake openid if lack of permission to acquire openid
 }
 
 # Datadog Config
