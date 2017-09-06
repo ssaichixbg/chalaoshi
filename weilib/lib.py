@@ -7,9 +7,9 @@ import os
 import json
 import re
 import hashlib
-import urllib
-import urllib2
-import urllib
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
+import urllib.request, urllib.parse, urllib.error
 from django.shortcuts import render_to_response
 from django.template.loader import render_to_string
 from django.template import Context, Template
@@ -18,7 +18,7 @@ from django.core.cache import cache
 from .models import MsgLog
 
 try:
-    import cPickle as pickle
+    import pickle as pickle
 except ImportError:
     import pickle
 
@@ -150,7 +150,7 @@ class WeiSession(object):
     """
 
     def __init__(self, session_id):
-        if not isinstance(session_id, (str, unicode, int)):
+        if not isinstance(session_id, (str, int)):
             raise TypeError("Argument openid [%s] must be a str/unicode/int object!")
         self.session_id = session_id
         self._get_session()
@@ -318,10 +318,10 @@ def get_qrcode(appid, appsecret, scene_id):
             'scene':int(scene_id),
         }
     }
-    result = json.loads(urllib2.urlopen(ticket_url,json.dumps(post)).read())
-    if not result.has_key('errcode'):
+    result = json.loads(urllib.request.urlopen(ticket_url,json.dumps(post)).read())
+    if 'errcode' not in result:
         ticket = result['ticket']
-        qrcode_url = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?%s' % (urllib.urlencode({
+        qrcode_url = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?%s' % (urllib.parse.urlencode({
             'ticket':ticket,
         }))
         return qrcode_url
@@ -338,10 +338,10 @@ def generate_js_signature(appid, appsecret,url, noncestr):
         ticket_url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%(token)s&type=jsapi'\
               % {'token': token}
         try:
-            result = urllib2.urlopen(ticket_url, timeout=20).read()
+            result = urllib.request.urlopen(ticket_url, timeout=20).read()
         except:
             return None
-        result = re.findall('"ticket":"(.*?)"', result)
+        result = re.findall(b'"ticket":"(.*?)"', result)
         if result:
             # save to cache
             cache.set(appid+'jsapi_ticket',result[0])
@@ -384,10 +384,10 @@ def get_token(appid, appsecret):
         % {'appid': appid, 'appsecret': appsecret}
     result = ''
     try:
-        result = urllib2.urlopen(url, timeout=20).read()
+        result = urllib.request.urlopen(url, timeout=20).read()
     except:
         return None
-    result = re.findall('"access_token":"(.*?)"', result)
+    result = re.findall(b'"access_token":"(.*?)"', result)
     if result:
         # save to cache
         cache.set(cache_key,result[0])
@@ -411,7 +411,7 @@ def create_menu(access_token, menu_list):
     # open('tmp.json','w').write(endata)
     try:
         result = ""
-        result = urllib2.urlopen(url, endata, 20).read()
+        result = urllib.request.urlopen(url, endata, 20).read()
     except:
         return False
     return result
@@ -478,7 +478,7 @@ def web_page_auth_url(appid,redirect_uri,scope=2):
         'response_type' : 'code',
         'scope' : scope,
     }
-    url = 'https://open.weixin.qq.com/connect/oauth2/authorize?' + urllib.urlencode(params) + '#wechat_redirect'
+    url = 'https://open.weixin.qq.com/connect/oauth2/authorize?' + urllib.parse.urlencode(params) + '#wechat_redirect'
     return url
 # TODO:
 #def get

@@ -19,7 +19,6 @@ def convert2PY(string):
         if (intord >= 65 and intord <=90 ) or (intord >= 97 and intord <=122):
             return ch[0:1].lower()
         for line in lines:
-            line = line.decode('utf-8')
             if ch in line:
                 line = line.split(',')[0].replace('\n','')
                 return line[1:len(line)-1]
@@ -28,7 +27,7 @@ def convert2PY(string):
 
     if (len(string)==0):
         return ''
-    if not (isinstance(string,unicode)):
+    if not (isinstance(string,str)):
         string = string.decode('utf-8')
 
     py = ''
@@ -38,4 +37,4 @@ def convert2PY(string):
 
     return py
 
-print convert2PY('乐123aafdff')
+print((convert2PY('乐123aafdff')))

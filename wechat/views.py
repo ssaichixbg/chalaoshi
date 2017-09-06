@@ -1,7 +1,7 @@
 # coding:utf-8
 import json
 import time
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 from django.http import *
 from django.shortcuts import  render_to_response
@@ -40,16 +40,16 @@ def wx_userinfo_mock_callback(request):
         return render_to_response('')
 
 def wx_userinfo_callback(request):
-    import urllib2
+    import urllib.request, urllib.error, urllib.parse
     from django.utils.http import urlencode
     def url_add_params(url, **params):  
-        import urlparse
-        pr = urlparse.urlparse(url)
-        query = dict(urlparse.parse_qsl(pr.query))  
+        import urllib.parse
+        pr = urllib.parse.urlparse(url)
+        query = dict(urllib.parse.parse_qsl(pr.query))  
         query.update(params)
         prlist = list(pr)
         prlist[4] = urlencode(query)  
-        return urlparse.ParseResult(*prlist).geturl()
+        return urllib.parse.ParseResult(*prlist).geturl()
 
     redirect = request.session.get('redirect','/')
     code = request.GET.get('code','')
@@ -62,7 +62,7 @@ def wx_userinfo_callback(request):
         settings.WECHAT['SECRET'],
         code,
     ) 
-    response = urllib2.urlopen(url).read()
+    response = urllib.request.urlopen(url).read()
     dic = json.loads(response)
     
     error = dic.get('errcode',-1)

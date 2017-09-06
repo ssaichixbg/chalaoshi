@@ -20,8 +20,8 @@
     <div class="teacher">
         <div class="left">
             <h3>{{teacher.name}}</h3>
-            <p>{{teacher.college.school}}</p>
-            <p>{{teacher.college}}</p>
+            <p>{{teacher.college.school.name}}</p>
+            <p>{{teacher.college.name}}</p>
             {% if not_empty %}
             <p>{{check_in}}%的人认为该老师会点名<br></p>
             {% endif %}

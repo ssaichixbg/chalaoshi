@@ -1,6 +1,6 @@
 import json
 import time
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 from django.http import *
 from django.shortcuts import  render_to_response
