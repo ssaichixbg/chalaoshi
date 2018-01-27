@@ -26,7 +26,7 @@ class School(models.Model):
 class College(models.Model):
     name = models.CharField(max_length=100)
     school = models.ForeignKey(School)
-    display = models.BooleanField(default=True)
+    display = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.name

@@ -389,11 +389,11 @@ def upload_teachers(request):
         i = 0
         new_teachers = []
         for line in reader:
-            college = line[0]
-            teacher = line[1]
+            college = line[0].decode('utf-8')
+            teacher = line[1].decode('utf-8')
             if len(college) > 0 and len(teacher) > 0:
                 (college,new)  = College.objects.get_or_create(name=college,school=school)
-                (teacher,new) = Teacher.objects.get_or_create(name=teacher,college=college)
+                (teacher_obj,new) = Teacher.objects.get_or_create(name=teacher,college=college)
                 if new:
                     new_teachers.append(teacher)
             i+=1
