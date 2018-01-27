@@ -387,15 +387,17 @@ def upload_teachers(request):
         school = '浙江大学'
         (school,new) = School.objects.get_or_create(name=school)
         i = 0
+        new_teachers = []
         for line in reader:
             college = line[0]
             teacher = line[1]
             if len(college) > 0 and len(teacher) > 0:
                 (college,new)  = College.objects.get_or_create(name=college,school=school)
                 (teacher,new) = Teacher.objects.get_or_create(name=teacher,college=college)
-
+                if new:
+                    new_teachers.append(teacher)
             i+=1
-        return HttpResponse(i)
+        return HttpResponse('<br>'.join(new_teachers))
 
 def feedback(request):
     if request.method == 'GET':

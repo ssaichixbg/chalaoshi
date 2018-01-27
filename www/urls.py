@@ -20,7 +20,7 @@ urlpatterns += [
 
 urlpatterns += [
         #url(r'^signin','signin'),
-        #url(r'^upload_teachers',upload_teachers),
+        url(r'^upload_teachers',upload_teachers),
         url(r'^search$',search),
         url(r'^feedback$',feedback),
 
