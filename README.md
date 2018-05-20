@@ -4,7 +4,7 @@
 
 ## 运行环境
 
-SAE + Django 1.5 + Memcache + mysql
+Django 1.5 + Memcache + mysql
 
 ## 功能
 
@@ -22,5 +22,33 @@ SAE + Django 1.5 + Memcache + mysql
 * 防止刷评论、刷评分算法
 
 ## Demo
+
+http://chalaoshi.cn
+
+
+# English
+# [Rate My Professor](http://chalaoshi.cn)
+
+An anonymous professorrating platform for students
+
+## Environment
+
+Django 1.5 + Memcache + mysql
+
+## Features
+
+* Rate professors with comments
+* Professor rateing rank(by University or Department)
+* Like or dislike a comment
+* Smart search on professors(by PINYIN)
+* Import professors from CSV file
+* Comments management
+
+## Algorithm
+* Rate Ranking
+* Hot Ranking
+* Anti-cheat
+
+## Online Demo
 
 http://chalaoshi.cn
