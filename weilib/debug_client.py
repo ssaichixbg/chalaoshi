@@ -10,7 +10,7 @@ by winkidney@gmail.com
 import sys
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import urllib,urllib2,re
+import urllib.request, urllib.parse, urllib.error,urllib.request,urllib.error,urllib.parse,re
 
 QTextCodec.setCodecForTr(QTextCodec.codecForName("utf8"))
 
@@ -188,7 +188,7 @@ class WeiDev(QDialog):
         #label_send = QLabel(self.tr("发出的信息"))
         #tmp_layout.addWidget(label_send)
         default_radio = False
-        for item in self.radio_dict.items():
+        for item in list(self.radio_dict.items()):
             radio = QRadioButton(item[0])
             if not default_radio:
                 default_radio = True
@@ -275,18 +275,18 @@ class WeiDev(QDialog):
            return string object for rendering
         """
         url = str(self.line_post_url.text())
-        request_body = unicode(self.msg_send_area.toPlainText()).encode('utf-8')
-        request = urllib2.Request(url, request_body)
+        request_body = str(self.msg_send_area.toPlainText()).encode('utf-8')
+        request = urllib.request.Request(url, request_body)
         request.add_header('Content-Type', 'application/octet-stream')
         request.add_header('User-Agent', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:27.0) Gecko/20100101 Firefox/27.0')
 
 
         try:
             # response = self.opener.open(url, request_body, 5)
-            response = urllib2.urlopen(request, timeout=5)
+            response = urllib.request.urlopen(request, timeout=5)
             self.msg_response_area.setText(self.tr(response.read()))
         except:
-            QMessageBox.critical(self,u"错误",
+            QMessageBox.critical(self,"错误",
                              self.tr("url错误或url访问超时……\n404错误也会让你看到这个对话框:)"))
 def main():
 

@@ -53,7 +53,7 @@ class College(models.Model):
         if getCache(key):
             return getCache(key)
 
-        from tools import convert2PY
+        from .tools import convert2PY
         colleges = list(College.objects.all().filter(display=True).order_by('name'))
         for college in colleges:
             college.pinyin = convert2PY(college.name[:1])
@@ -74,7 +74,7 @@ class Teacher(models.Model):
     pinyin = models.CharField(max_length=100)
 
     def save(self, *args, **kwargs):
-        from tools import convert2PY
+        from .tools import convert2PY
         if not self.pinyin or len(self.pinyin) == 0:
             self.pinyin = convert2PY(self.name)
         # delete cache
@@ -100,10 +100,10 @@ class Teacher(models.Model):
             gpa_key = 'teacher_%d_gpa' % self.pk
             cache_data = getCache(gpa_key)
             if not cache_data:
-                import urllib
-                import urllib2
-                url = 'http://zjustudy.chalaoshi.cn/course/list?'+urllib.urlencode({'teacher':self.name.encode('UTF-8')})
-                data = urllib2.urlopen(url).read()
+                import urllib.request, urllib.parse, urllib.error
+                import urllib.request, urllib.error, urllib.parse
+                url = 'http://zjustudy.chalaoshi.cn/course/list?'+urllib.parse.urlencode({'teacher':self.name.encode('UTF-8')})
+                data = urllib.request.urlopen(url).read()
                 setCache(gpa_key, data, 3600*24)
                 return data
             else:
@@ -140,14 +140,13 @@ class Teacher(models.Model):
                 setCache(key,teachers,3600*4)
             else:
                 teachers = cached_teachers
-
             teachers_top = teachers[0:5]
             teachers_middle = teachers[5:15]
             teachers_bottom = teachers[15:30]
 
-            teachers = random.sample(teachers_top,n/3)
-            teachers += random.sample(teachers_middle,n/3)
-            teachers += random.sample(teachers_bottom,n - n/3*2)
+            teachers = random.sample(teachers_top, int(n/3))
+            teachers += random.sample(teachers_middle, int(n/3))
+            teachers += random.sample(teachers_bottom, int(n - n/3*2))
 
             return teachers
 
@@ -183,12 +182,11 @@ class Teacher(models.Model):
             teachers_top = teachers[0:5]
             teachers_middle = teachers[5:15]
             teachers_bottom = teachers[15:30]
+            teachers = random.sample(teachers_top, int(n/3))
+            teachers += random.sample(teachers_middle, int(n/3))
+            teachers += random.sample(teachers_bottom, int(n - n/3*2))
 
-            teachers = random.sample(teachers_top,n/3)
-            teachers += random.sample(teachers_middle,n/3)
-            teachers += random.sample(teachers_bottom,n - n/3*2)
-
-            return sorted(teachers,lambda x,y:cmp(x.rate, y.rate) * (-1 if desc else 1))
+            return sorted(teachers, key = lambda x:x.rate, reverse=desc)
 
 
     @staticmethod
@@ -203,12 +201,12 @@ class Teacher(models.Model):
             teachers = Teacher.objects.all().filter(q)
             teachers = teachers.order_by('-hot')[:40]
         else:
-            if not isinstance(kw, unicode):
+            if not isinstance(kw, str):
                 kw = kw.decode('utf-8')
             teachers = Teacher.objects.all().filter(Q(name__contains=kw) | Q(pinyin__startswith=kw))
             teachers = teachers.order_by('-hot')[:20]
 
-        key = 'search_teacher_%s' % (kw.encode('utf-8') if isinstance(kw, unicode) else kw)
+        key = 'search_teacher_%s' % (kw.encode('utf-8') if isinstance(kw, str) else kw)
 
         #if getCache(key):
         #    return getCache(key)

@@ -2,14 +2,14 @@
 
 from weilib.lib import create_menu,MButton,get_token
 def create_btns(hostname):
-    btn_search = MButton(u'\U0001F50D查老师', key='SEARCH')
+    btn_search = MButton('\U0001F50D查老师', key='SEARCH')
 
-    btn_rank = MButton(u'排行榜')
-    btn_rank.add_button(MButton(u'\U0001F525热门老师', url=hostname + '/?from=mp_menu#0'))
-    btn_rank.add_button(MButton(u'\U0001f51d高分榜', url=hostname + '/?from=mp_menu#1'))
-    btn_rank.add_button(MButton(u'\U0001f31a低分榜', url=hostname + '/?from=mp_menu#2'))
+    btn_rank = MButton('排行榜')
+    btn_rank.add_button(MButton('\U0001F525热门老师', url=hostname + '/?from=mp_menu#0'))
+    btn_rank.add_button(MButton('\U0001f51d高分榜', url=hostname + '/?from=mp_menu#1'))
+    btn_rank.add_button(MButton('\U0001f31a低分榜', url=hostname + '/?from=mp_menu#2'))
 
-    btn_home = MButton(u'\U0001F4C4网页版', url=hostname + '/?from=mp_menu')
+    btn_home = MButton('\U0001F4C4网页版', url=hostname + '/?from=mp_menu')
 
     #btn1.make_click(url='http://chalaoshi.cn/?from=mp_menu')
     #btn1.add_button(MButton('发Offer', url='http://weixin2py.gg-workshop.com/recent/'))

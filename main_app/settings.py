@@ -153,4 +153,5 @@ DATADOG_APP_NAME = ''
 HOST_NAME = 'https://chalaoshi.cn'
 
 CACHE_DOMAIN = 'cls_proc'
-from local_settings import *
+
+from main_app.local_settings import *

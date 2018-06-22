@@ -2,9 +2,9 @@
 # coding:utf-8
 # tuwei/handlers.py - router handlers for tuwei
 # ver 0.1 by winkidney 2014.05.10
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import json
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import socket
 
 from django.db.models import Q
@@ -24,8 +24,8 @@ def search_handler(recv_msg):
     def search_teacher():
         recv_content = recv_msg.content
         teachers = Teacher.search(recv_content)
-        items = [PTItem(u'{t.name}\t\t评分:{t.rate:.2f}'.format(t=t),
-                        u'{t.name}\t\t评分:{t.rate:.2f}'.format(t=t),
+        items = [PTItem('{t.name}\t\t评分:{t.rate:.2f}'.format(t=t),
+                        '{t.name}\t\t评分:{t.rate:.2f}'.format(t=t),
                         '',
                         HOST + '/teacher/%d/' % t.pk)
                  for t in teachers]
@@ -33,7 +33,7 @@ def search_handler(recv_msg):
 
     def search_course():
         recv_content = recv_msg.content
-        result = urllib2.urlopen('http://zjustudy.chalaoshi.cn/_api/teacher/list?'+urllib.urlencode({
+        result = urllib.request.urlopen('http://zjustudy.chalaoshi.cn/_api/teacher/list?'+urllib.parse.urlencode({
             'course_name':recv_content
         })).read()
 
@@ -43,11 +43,11 @@ def search_handler(recv_msg):
 
         items = []
         for course in courses:
-            name = u'{course[name]}\t{course[kcdm]}'.format(course=course)
+            name = '{course[name]}\t{course[kcdm]}'.format(course=course)
             teachers = course['teachers']
             url = HOST + '?'
             for teacher in teachers[:30]:
-                url += u'q=%s&' % teacher['name']
+                url += 'q=%s&' % teacher['name']
             item = PTItem(name, name, '', url)
             items.append(item)
         return items

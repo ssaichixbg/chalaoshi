@@ -1,8 +1,8 @@
 # coding:utf-8
 import json
 import time
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 
 from django.http import *
 from django.shortcuts import render_to_response
@@ -147,7 +147,7 @@ def home(request):
     search_url = ''
     if len(keywords) > 0:
         for keyword in keywords:
-            search_url += 'q=%s&' % urllib.quote(keyword.encode('UTF-8'))
+            search_url += 'q=%s&' % urllib.parse.quote(keyword.encode('UTF-8'))
 
     request.session['college'] = college_id
 
@@ -167,7 +167,7 @@ def search(request):
     if len(query) > 1:
         teachers = Teacher.search(query)
     else:
-        keyword = request.GET.get('q','').replace(' ','').replace('\'','').replace(u'\u2006','')
+        keyword = request.GET.get('q','').replace(' ','').replace('\'','').replace('\\u2006','')
         teachers = Teacher.search(keyword.encode('utf-8'))
 
     for teacher in teachers:
@@ -212,12 +212,12 @@ def teacher_detail(request, tid):
     college= teacher.college
 
     # wechat share
-    desc = u'%s老师尚未收到足够评分,快来评价吧吧!' %teacher.name
-    title = u'快来评价%s老师吧! - 查老师' % teacher.name
+    desc = '%s老师尚未收到足够评分,快来评价吧吧!' %teacher.name
+    title = '快来评价%s老师吧! - 查老师' % teacher.name
 
     if count > MIN_COUNT:
-        desc = u'%d人评价 %s分 有%s%%的人认为老师点名 ' % (count, rate, check_in)
-        title = u'听%s老师(%s分)的课是怎样的一种体验 - 查老师' % (teacher.name, rate)
+        desc = '%d人评价 %s分 有%s%%的人认为老师点名 ' % (count, rate, check_in)
+        title = '听%s老师(%s分)的课是怎样的一种体验 - 查老师' % (teacher.name, rate)
         comments = Comment.get_comments(teacher)
         if comments:
             desc += comments[0].content
@@ -382,7 +382,7 @@ def upload_teachers(request):
         """)
     else:
         import csv
-        f = request.FILES['file']
+        f = request.FILES['file'].read().decode('utf-8').splitlines()
         reader = csv.reader(f)
         school = '浙江大学'
         (school,new) = School.objects.get_or_create(name=school)

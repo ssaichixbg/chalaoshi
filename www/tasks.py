@@ -117,7 +117,7 @@ def cal_rate(request=None, debug=False):
         rate_list = copy.copy(teacher_rates.get(teacher.pk,[]))
         count = len(rate_list)
         
-        print teacher.id, '\t', teacher.name
+        print((teacher.id, '\t', teacher.name))
         if count >=5:
             ave_rate = average_rate(rate_list)
             rate = 1.0 * count / ( 5 + count) * ave_rate + \
@@ -132,7 +132,7 @@ def cal_rate(request=None, debug=False):
         time.sleep(0.2)
 
     html += '<h5>%.2f</h5>' % teacher_ave
-    print 'AVERAGE RATING: %.2f' % teacher_ave
+    print(('AVERAGE RATING: %.2f' % teacher_ave))
     results.sort(key=lambda result: -result[1])
     for result in results:
 #       print '%s\t%.1f\t%.1f\t%d\t%s' % (result[0], result[1],result[2], result[3], str(result[4]))

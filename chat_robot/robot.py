@@ -1,6 +1,6 @@
 #!coding=utf-8
-import urllib2
-import urllib
+import urllib.request, urllib.error, urllib.parse
+import urllib.request, urllib.parse, urllib.error
 import json
 
 
@@ -17,11 +17,11 @@ def get_reply(content,openId=''):
             'userid':openId,
 
         }
-        response = urllib2.urlopen('http://www.tuling123.com/openapi/api?'+urllib.urlencode(params))
+        response = urllib.request.urlopen('http://www.tuling123.com/openapi/api?'+urllib.parse.urlencode(params))
         dic = json.loads(response.read())
         return dic['text'].replace('<br>','\n')
     except:
         return ""
 
 if __name__ == '__main__':
-    print get_reply('hi').encode('utf-8')
+    print((get_reply('hi').encode('utf-8')))
