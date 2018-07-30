@@ -62,8 +62,8 @@ def cal_hot(request=None):
         teacher.hot = hot
         teacher.save()
         results.append((teacher.name, hot,detail,comment))
-        time.sleep(0.2)
-
+        #time.sleep(0.2)
+        print('%d, %f' % (teacher.pk, hot))
     if request is None:
         return
 
@@ -101,6 +101,7 @@ def cal_rate(request=None, debug=False):
                 weight += 0.25
             teacher_rates.setdefault(pk,[])
             teacher_rates[pk].append((rate.rate, weight))
+            print('%d, %f, %f' % (pk, rate.rate, weight))
         return teacher_rates
 
     html = '<table>'
@@ -110,14 +111,13 @@ def cal_rate(request=None, debug=False):
     for rate in rates:
         teacher_rates.append(rate.rate)
     teacher_ave = sum(teacher_rates) * 1.0 / len(teacher_rates)
-
     teacher_rates = devide_rate(rates)
     teachers = Teacher.objects.all()
     for teacher in teachers:
         rate_list = copy.copy(teacher_rates.get(teacher.pk,[]))
         count = len(rate_list)
         
-        print teacher.id, '\t', teacher.name
+        print teacher.id# '\t', teacher.name
         if count >=5:
             ave_rate = average_rate(rate_list)
             rate = 1.0 * count / ( 5 + count) * ave_rate + \
@@ -129,7 +129,7 @@ def cal_rate(request=None, debug=False):
         
         if not debug:
             teacher.save()
-        time.sleep(0.2)
+        #time.sleep(0.05)
 
     html += '<h5>%.2f</h5>' % teacher_ave
     print 'AVERAGE RATING: %.2f' % teacher_ave
